@@ -1,12 +1,12 @@
 import Image from "next/image";
-import { Inter } from "next/font/google";
+import Layout from "@/components/Layout";
 
-const inter = Inter({ subsets: ["latin"] });
+
 
 export default function Home() {
   return (
-   <div>
-    Nihar j reddy portfolio
-   </div>
+  <Layout>
+    <h1>Nihar reddy j </h1>
+  </Layout>
   );
 }
