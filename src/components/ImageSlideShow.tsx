@@ -1,5 +1,5 @@
 // components/ImageSlideshow.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 interface ImageSlideshowProps {
   images: string[];
@@ -8,7 +8,6 @@ interface ImageSlideshowProps {
 const ImageSlideshow: React.FC<ImageSlideshowProps> = ({ images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -24,22 +23,18 @@ const ImageSlideshow: React.FC<ImageSlideshowProps> = ({ images }) => {
     const pauseTimer = setTimeout(() => {
       setIsPaused(false);
     }, 40000); // Pause for 40 seconds
-    
 
     return () => clearTimeout(pauseTimer);
   }, [currentImageIndex]);
 
   return (
-    <div className="relative w-full h-full" >
-   
-
-      <div className='bg-cover bg-center h-[80vh] w-full'
-      onMouseEnter={() => setIsPaused(true)}
+    <div className="relative w-full h-full">
+      <div
+        className="bg-cover bg-center h-[60vh] lg:h-[80vh] w-full"
+        onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
-      style={{backgroundImage:`url(${images[currentImageIndex]})`}}
-      >
-
-      </div>
+        style={{ backgroundImage: `url(${images[currentImageIndex]})` }}
+      ></div>
     </div>
   );
 };

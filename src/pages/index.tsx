@@ -5,7 +5,7 @@ import { images } from "./about";
 export default function Home() {
   return (
     <Layout>
-      <div className="h-[90vh] flex flex-col justify-end bg-white px-4 md:px-8 mb-24">
+      <div className="min-h-[90vh] flex flex-col justify-end bg-white px-4 md:px-8 mb-24">
         <div className="grid grid-cols-12 gap-x-6">
           <div className="col-span-12 md:col-span-5 lg:col-span-4">
             <div className="">
@@ -14,10 +14,10 @@ export default function Home() {
           </div>
           <div className="col-span-12 md:col-span-6 lg:col-span-8">
             <div className="flex flex-col justify-center items-start text-left h-full">
-              <h1 className="text-8xl font-bold text-blue-600 text-left mb-6">
-                Nihar j reddy
+              <h1 className="text-7xl lg:text-8xl font-bold text-blue-600 text-left mb-6">
+                NIHAR J REDDY
               </h1>
-              <p className="text-blue-600 italic">
+              <p className="text-blue-600 italic text-4xl font-extralight">
                 Photographer + civil engineer
               </p>
             </div>

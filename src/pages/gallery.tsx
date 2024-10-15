@@ -3,14 +3,7 @@ import Typography from "@/components/Typography";
 import { cn } from "@/functions/cn";
 import { useState } from "react";
 
-const categories = [
-  "All",
-  "Portrait",
-  "Landscape",
-  "Nature",
-  "Urban",
-  "Architecture",
-];
+const categories = ["All", "Landscape", "Fine Art", "Work", "Animals"];
 
 const GalleryPage = () => {
   const [activeFilter, setActiveFilter] = useState("All");
