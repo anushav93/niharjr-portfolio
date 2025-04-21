@@ -14,8 +14,8 @@ const About: React.FC = () => {
     <Layout>
       <>
         <div className="mt-12 mb-6 px-4 md:px-8 flex flex-row flex-wrap items-end gap-x-3 ">
-          <h1 className="font-medium text-6xl text-blue-600">CREATING </h1>{" "}
-          <h1 className="text-4xl italic font-extralight text-blue-600">
+          <h1 className="font-medium text-6xl text-neutral-900">CREATING </h1>{" "}
+          <h1 className="text-4xl italic font-extralight text-neutral-900">
             VISUAL PEACE
           </h1>
         </div>
@@ -50,7 +50,7 @@ const About: React.FC = () => {
           <div className="grid grid-cols-12 pt-24">
             <div className="col-span-12 md:col-span-4"></div>
             <div className="col-span-12 md:col-span-6">
-              <h1 className="text-xs font-medium mb-4 uppercase text-blue-500">
+              <h1 className="text-xs font-medium mb-4 uppercase text-neutral-900">
                 About Me
               </h1>
               <h4 className="text-lg">
