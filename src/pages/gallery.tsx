@@ -3,6 +3,7 @@ import PhotoGrid from "@/components/PhotosGrid";
 import { cn } from "@/functions/cn";
 import { UNSPLASH_ACCESS_KEY, UNSPLASH_USERNAME } from "@/functions/config";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 interface Collection {
   id: string;
@@ -54,21 +55,32 @@ const GalleryPage = ({ collections }: PhotographyProps) => {
             Moments of Serenity
           </h1>
         </div>
-        <div className="flex flex-row flex-wrap gap-y-3 gap-x-4 mt-4 mb-12">
+        <div className="flex flex-row overflow-x-scroll gap-y-3 gap-x-4 mt-4 mb-12">
           {filters.map((category) => {
             return (
-              <div
+              <motion.div
                 key={category}
                 onClick={() => handleFilterClick(category)}
                 className={cn(
-                  "text-lg uppercase border-2 border-neutral-900 text-neutral-900 px-2 py-1 cursor-pointer transition-all duration-300 ease-in-out",
+                  "text-base uppercase border-2 text-nowrap border-neutral-900 text-neutral-900 px-2 py-1 cursor-pointer",
                   activeFilter === category
                     ? "bg-neutral-900 text-white"
                     : "bg-white text-neutral-900"
                 )}
+                initial={{ opacity: 0.9 }}
+                whileHover={{ 
+                  opacity: 1,
+                  borderColor: "#000",
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ scale: 0.98 }}
+                animate={{
+                  y: activeFilter === category ? [0, -2, 0] : 0,
+                }}
+                transition={{ duration: 0.3 }}
               >
                 {category}
-              </div>
+              </motion.div>
             );
           })}
         </div>

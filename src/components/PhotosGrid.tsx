@@ -146,7 +146,7 @@ const Modal: React.FC<{
         exit={{ scale: 0.8, opacity: 0 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white bg-opacity-20 backdrop-blur-lg rounded-lg overflow-hidden max-w-4xl max-h-[90vh] w-full flex flex-col shadow-xl relative"
+        className="bg-white bg-opacity-20 backdrop-blur-lg rounded-lg overflow-hidden max-w-4xl max-h-[90vh] w-full flex flex-col  relative"
       >
         <div className="absolute top-0 left-0 right-0 z-10">
           <AnimatePresence>
@@ -307,8 +307,8 @@ const PhotoGrid: React.FC<{ photos: Photo[] }> = ({ photos }) => {
     default: 4, // Default to 4 columns
     1280: 4,    // 4 columns for large screens
     1024: 3,    // 3 columns for medium screens
-    768: 2,     // 2 columns for small screens
-    640: 1      // 1 column for mobile
+    768: 3,     // 2 columns for small screens
+    640: 2      // 1 column for mobile
   };
 
   return (
@@ -332,7 +332,7 @@ const PhotoGrid: React.FC<{ photos: Photo[] }> = ({ photos }) => {
             <img
               src={photo.urls.regular}
               alt={photo.alt_description || "Unsplash photo"}
-              className="w-full shadow-md cursor-pointer hover:opacity-90 transition-opacity"
+              className="w-full  cursor-pointer hover:opacity-90 transition-opacity"
             />
           </motion.div>
         ))}

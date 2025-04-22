@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 interface ImageSlideshowProps {
   images: string[];
@@ -9,9 +10,30 @@ const ImageSlideshow: React.FC<ImageSlideshowProps> = ({ images }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Select a random image from the array
-    const randomIndex = Math.floor(Math.random() * images.length);
+    if (images.length === 0) return;
+
+    // Get the last shown image index from cookie
+    const lastShownIndexCookie = Cookies.get("lastShownImageIndex");
+    let lastShownIndex = lastShownIndexCookie ? parseInt(lastShownIndexCookie, 10) : -1;
+    
+    // Get available indices excluding the last shown one
+    const availableIndices = Array.from(
+      { length: images.length },
+      (_, i) => i
+    ).filter(idx => idx !== lastShownIndex);
+    
+    // If we've somehow filtered all indices (shouldn't happen unless there's only 1 image)
+    if (availableIndices.length === 0 && images.length > 0) {
+      availableIndices.push(0);
+    }
+    
+    // Select a random image from the available indices
+    const randomIndexPosition = Math.floor(Math.random() * availableIndices.length);
+    const randomIndex = availableIndices[randomIndexPosition];
     const selectedImage = images[randomIndex];
+    
+    // Save the current index to cookie (expires in 1 day)
+    Cookies.set("lastShownImageIndex", randomIndex.toString(), { expires: 1 });
     
     // Preload the selected image
     const img = new Image();
@@ -32,25 +54,13 @@ const ImageSlideshow: React.FC<ImageSlideshowProps> = ({ images }) => {
 
   return (
     <div className="relative w-full h-full">
-      <div className="w-full h-full p-4">
-        {/* Outer frame container with realistic shadow */}
-        <div className="relative w-full h-[60vh] lg:h-[80vh] shadow-[5px_5px_15px_rgba(0,0,0,0.35)] transform translate-y-1 translate-x-1">
-          {/* Black frame with better inner shadow effect */}
-          <div className="absolute inset-0 border-[16px] border-black" style={{
-            boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.1), inset 0 0 8px rgba(0,0,0,0.5), 2px 2px 10px rgba(0,0,0,0.15)'
-          }}></div>
-          
-          {/* White mat with subtle shadow */}
-          <div className="absolute inset-[16px] border-[16px] border-white" style={{
-            boxShadow: 'inset 0 0 6px rgba(0,0,0,0.15)'
-          }}></div>
-          
-          {/* Image inside mat with object-fit cover for better display */}
-          <div className="absolute inset-[32px] overflow-hidden">
+      <div className="w-full h-full">
+        <div className="relative w-full h-[60vh] lg:h-[80vh] overflow-hidden">
+          <div className="absolute overflow-hidden h-full w-full">
             <img 
               src={randomImage} 
               alt="Framed photograph" 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover bg-center"
               style={{
                 boxShadow: 'inset 0 0 5px rgba(0,0,0,0.1)'
               }}
