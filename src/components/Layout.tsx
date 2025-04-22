@@ -1,9 +1,13 @@
 import React, { ReactElement } from "react";
-import { Noto_Sans } from "next/font/google";
+import { IBM_Plex_Sans } from "next/font/google";
 import Navbar from "./Navbar";
 import HeadWithMetas from "./HeadWithMetas";
 
-const noto = Noto_Sans({ subsets: ["latin"] });
+const noto =  IBM_Plex_Sans({
+  weight: ["100", "200", "300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap"
+});
 
 type LayoutProps = {
   children: ReactElement;
@@ -20,7 +24,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           url: "/njr-social.png",
         }}
       />
-      <header className="sticky top-0">
+      <header className="sticky top-0 z-[200]">
         {/* Your header content goes here */}
         <Navbar />
       </header>

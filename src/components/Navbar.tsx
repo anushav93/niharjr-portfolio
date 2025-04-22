@@ -1,6 +1,6 @@
 const Navbar: React.FC = () => {
   return (
-    <nav className="flex items-center justify-between p-4 md:px-8 transition-all duration-300 ease-in-out bg-white  z-[100]">
+    <nav className="flex items-center justify-between p-4 md:px-8 transition-all duration-300 ease-in-out bg-white  ">
       <div className="flex items-center">
         <a href="/" className="mr-4 text-xl font-extralight text-blue-600">
           <img src="/njrlogo.svg" alt="Nihar J Reddy" className="h-10 w-10" />

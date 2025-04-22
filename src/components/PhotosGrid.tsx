@@ -302,30 +302,41 @@ const PhotoGrid: React.FC<{ photos: Photo[] }> = ({ photos }) => {
     setSelectedPhotoIndex(null);
   };
 
+  // Define breakpoints for the masonry grid
+  const breakpointColumnsObj = {
+    default: 4, // Default to 4 columns
+    1280: 4,    // 4 columns for large screens
+    1024: 3,    // 3 columns for medium screens
+    768: 2,     // 2 columns for small screens
+    640: 1      // 1 column for mobile
+  };
+
   return (
     <>
-      <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
-        <AnimatePresence>
-          {photos.map((photo, index) => (
-            <motion.div
-              key={index}
-              layout
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3 }}
-              className="mb-4 break-inside-avoid"
-              onClick={() => setSelectedPhotoIndex(index)}
-            >
-              <img
-                src={photo.urls.regular}
-                alt={photo.alt_description || "Unsplash photo"}
-                className="w-full shadow-md cursor-pointer hover:opacity-90 transition-opacity"
-              />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className="flex w-full -ml-4" // Negative margin to offset the gutter
+        columnClassName="pl-4" // Left padding creates the gutter
+      >
+        {photos.map((photo, index) => (
+          <motion.div
+            key={index}
+            layout
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+            className="mb-4 break-inside-avoid"
+            onClick={() => setSelectedPhotoIndex(index)}
+          >
+            <img
+              src={photo.urls.regular}
+              alt={photo.alt_description || "Unsplash photo"}
+              className="w-full shadow-md cursor-pointer hover:opacity-90 transition-opacity"
+            />
+          </motion.div>
+        ))}
+      </Masonry>
       <AnimatePresence>
         {selectedPhoto && (
           <Modal
