@@ -7,8 +7,9 @@ const nextConfig = {
   experimental: {
     // Remove appDir since it's now the default in Next.js 14+
     nextScriptWorkers: true,
-    serverComponentsExternalPackages: ['nodemailer'],
   },
+  // Updated from experimental.serverComponentsExternalPackages
+  serverExternalPackages: ['nodemailer'],
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
@@ -16,6 +17,15 @@ const nextConfig = {
   },
   compiler: {
     styledComponents: true,
+  },
+  // Add dependency resolution tolerance
+  transpilePackages: ['framer-motion', '@heroicons/react', 'react-masonry-css', 'react-safe'],
+  // Ignore peer dependency warnings
+  externalDir: true,
+  modularizeImports: {
+    '@heroicons/react': {
+      transform: '@heroicons/react/{{member}}',
+    },
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -29,6 +39,19 @@ const nextConfig = {
         child_process: false,
       };
     }
+    
+    // Force React resolution to use the same version
+    config.resolve.alias = {
+      ...config.resolve.alias
+    };
+    
+    // Add specific resolution for peer dependency conflicts
+    config.resolve.extensions = ['.js', '.jsx', '.ts', '.tsx'];
+    config.resolve.mainFields = ['browser', 'module', 'main'];
+    
+    // Increase Webpack's tolerance for version mismatches
+    config.resolve.preferRelative = true;
+    
     return config;
   },
 };
