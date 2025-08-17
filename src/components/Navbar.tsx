@@ -1,30 +1,40 @@
 const Navbar: React.FC = () => {
   return (
-    <nav className="flex items-center justify-between p-4 md:px-8 transition-all duration-300 ease-in-out bg-white  ">
-      <div className="flex items-center">
-        <a href="/" className="mr-4 text-xl font-extralight text-blue-600">
-          <img src="/njrlogo.svg" alt="Nihar J Reddy" className="h-10 w-10" />
-        </a>
-      </div>
-      <div>
-        <ul className="flex space-x-6">
-          <li>
-            <a href="/" className="text-neutral-900 ">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="/about" className="text-neutral-900">
-              About
-            </a>
-          </li>
-          <li>
-            <a href="/gallery" className="text-neutral-900">
-              Gallery
-            </a>
-          </li>
-        </ul>
-      </div>
+    <nav className="w-full px-6 lg:px-8 h-20 flex items-center justify-between text-neutral-900 dark:text-white border-b border-neutral-400 dark:border-neutral-600">
+      <a href="/" className="flex items-center gap-2">
+        <img
+          src="/njrlogo.svg"
+          alt="Nihar J Reddy"
+          className="h-8 w-8 brightness-0 dark:invert"
+        />
+        <span className="text-base font-medium tracking-tight">NJ Reddy</span>
+      </a>
+      <ul className="hidden md:flex items-center gap-8 text-sm font-medium">
+        <li>
+          <a
+            className="hover:text-blue-600 transition-opacity uppercase tracking-widest font-light"
+            href="/"
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            className="hover:text-blue-600 transition-opacity uppercase tracking-widest font-light"
+            href="/gallery"
+          >
+            Gallery
+          </a>
+        </li>
+        <li>
+          <a
+            className="hover:text-blue-600 transition-opacity uppercase tracking-widest font-light"
+            href="/about"
+          >
+            About
+          </a>
+        </li>
+      </ul>
     </nav>
   );
 };

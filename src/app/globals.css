@@ -1,0 +1,42 @@
+/* OPTIONAL: if Inter var isn’t already bundled, this pulls the variable font.
+   If you already have it locally, keep that and remove the line below. */
+@import url('https://rsms.me/inter/inter.css');
+
+:root {
+  /* Use Inter var everywhere */
+  --font-sans: "Inter var", sans-serif;
+}
+
+/* Global font + a11y defaults */
+html { font-family: var(--font-sans); }
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+
+/* Keep your existing CSS variables/tokens below (colors, radii, shadows, etc.). */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+/* Keyframes for hero effects */
+@keyframes fadeCycle {
+  0%, 16% { opacity: 1 }
+  20%, 100% { opacity: 0 }
+}
+
+@keyframes heroFade {
+  0%, 20% { opacity: 0.6; transform: scale(1) }
+  25%, 45% { opacity: 0; transform: scale(1.1) }
+  50%, 100% { opacity: 0; transform: scale(1.1) }
+}
+
+

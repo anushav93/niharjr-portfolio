@@ -2,19 +2,19 @@ import { cn } from "@/functions/cn";
 import React, { ReactNode } from "react";
 
 interface TypographyProps {
-  variant: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "small" | "span";
+  variant: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "small";
   className?: string;
   children: ReactNode;
   fontWeight?:
     | "extralight"
     | "light"
     | "normal"
-    | "bold"
+    | "medium"
     | "semibold"
+    | "bold"
     | "extrabold";
-  wrapper?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "small" | "span";
-  color?: "dark" | "light" | "red";
-  offDarkMode?: boolean;
+  wrapper?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "small";
+  color?: "dark" | "medium" | "light";
 }
 
 const Typography: React.FC<TypographyProps> = ({
@@ -23,14 +23,13 @@ const Typography: React.FC<TypographyProps> = ({
   className,
   fontWeight,
   wrapper,
-  color,
-  offDarkMode,
+  color = "dark",
 }) => {
   const Tag = wrapper || variant;
 
-  let defaultClasses = offDarkMode
-    ? ""
-    : "text-blue-600  transition-all duration-300 ease-in-out ";
+  let defaultClasses = "";
+
+  // Base typography styles for each variant
   switch (variant) {
     case "h1":
       defaultClasses += "text-5xl md:text-6xl lg:text-7xl font-bold";
@@ -53,48 +52,52 @@ const Typography: React.FC<TypographyProps> = ({
     case "p":
       defaultClasses += "text-base";
       break;
-    case "span":
-      defaultClasses += "text-base";
-      break;
     case "small":
-      defaultClasses += "text-xs";
+      defaultClasses += "text-xs tracking-[0.15em] ";
       break;
     default:
       break;
   }
 
-  switch (fontWeight) {
-    case "extralight":
-      defaultClasses += " font-light";
-      break;
-    case "light":
-      defaultClasses += " font-extralight";
-      break;
-    case "normal":
-      defaultClasses += " font-normal";
-      break;
-    case "bold":
-      defaultClasses += " font-bold";
-      break;
-    case "semibold":
-      defaultClasses += " font-semibold";
-      break;
-    case "extrabold":
-      defaultClasses += " font-extrabold";
-      break;
-    default:
-      break;
+  // Apply font weight if specified (overrides variant default)
+  if (fontWeight) {
+    switch (fontWeight) {
+      case "extralight":
+        defaultClasses += " font-extralight";
+        break;
+      case "light":
+        defaultClasses += " font-light";
+        break;
+      case "normal":
+        defaultClasses += " font-normal";
+        break;
+      case "medium":
+        defaultClasses += " font-medium";
+        break;
+      case "semibold":
+        defaultClasses += " font-semibold";
+        break;
+      case "bold":
+        defaultClasses += " font-bold";
+        break;
+      case "extrabold":
+        defaultClasses += " font-extrabold";
+        break;
+      default:
+        break;
+    }
   }
 
+  // Apply color
   switch (color) {
     case "dark":
-      defaultClasses += "";
+      defaultClasses += " text-neutral-900";
+      break;
+    case "medium":
+      defaultClasses += " text-neutral-600";
       break;
     case "light":
-      defaultClasses += "";
-      break;
-    case "red":
-      defaultClasses += " !text-customRed-500 dark:!text-customRed-500 ";
+      defaultClasses += " text-neutral-50";
       break;
     default:
       break;

@@ -1,13 +1,6 @@
 import React, { ReactElement } from "react";
-import { DM_Sans } from "next/font/google";
 import Navbar from "./Navbar";
 import HeadWithMetas from "./HeadWithMetas";
-
-const noto =  DM_Sans({
-  weight: [ "300", "400", "500", "600", "700"],
-  subsets: ["latin"],
-  display: "swap"
-});
 
 type LayoutProps = {
   children: ReactElement;
@@ -15,7 +8,7 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className={`flex flex-col min-h-screen ${noto.className}`}>
+    <div className={"flex flex-col min-h-screen font-sans antialiased"}>
       <HeadWithMetas
         title="Nihar J Reddy"
         description="Nihar J Reddy - Photographer + civil engineer"
