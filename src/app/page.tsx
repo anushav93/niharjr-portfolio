@@ -27,7 +27,7 @@ export default function HomePage() {
   return (
     <div className="pt-20">
       {/* Hero Section with border */}
-      <section className="border-b border-neutral-400 dark:border-neutral-600">
+      <section className="">
         <PageHero photos={heroPhotos} />
       </section>
 
@@ -115,7 +115,7 @@ export default function HomePage() {
             {featured.map((p, idx) => (
               <div
                 key={idx}
-                className="group p-4  transition-all duration-700 ease-in-out border-r border-neutral-900"
+                className="group p-4  transition-all duration-700 ease-in-out "
               >
                 <div className="relative overflow-hidden bg-neutral-100 dark:bg-neutral-800 aspect-[4/5]">
                   <img

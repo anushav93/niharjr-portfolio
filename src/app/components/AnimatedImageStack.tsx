@@ -24,7 +24,21 @@ export default function AnimatedImageStack({
   speed = 18,
   className = "",
 }: Props) {
-  const total = Math.max(1, rows * cols);
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 640px)");
+    setIsMobile(mediaQuery.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
+
+  const resolvedRows = isMobile ? 4 : rows;
+  const resolvedCols = isMobile ? 3 : cols;
+  const resolvedGap = isMobile ? 4 : gap;
+  const resolvedLensRadius = isMobile ? 170 : lensRadius;
+
+  const total = Math.max(1, resolvedRows * resolvedCols);
 
   // repeat images to fill grid
   const tiles = useMemo(() => {
@@ -101,7 +115,7 @@ export default function AnimatedImageStack({
             "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
           // CSS vars for lens position (autopilot sets these; pointer overrides too)
           // @ts-ignore – custom props are fine
-          "--lx": "50%",
+          "--lx": "40%",
           "--ly": "50%",
         } as React.CSSProperties
       }
@@ -119,9 +133,9 @@ export default function AnimatedImageStack({
       {/* Base grayscale layer */}
       <Grid
         tiles={tiles}
-        rows={rows}
-        cols={cols}
-        gap={gap}
+        rows={resolvedRows}
+        cols={resolvedCols}
+        gap={resolvedGap}
         aspectClass={aspectClass}
         grayscale
       />
@@ -130,15 +144,15 @@ export default function AnimatedImageStack({
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          WebkitMaskImage: `radial-gradient(${lensRadius}px ${lensRadius}px at var(--lx) var(--ly), black 75%, transparent 100%)`,
-          maskImage: `radial-gradient(${lensRadius}px ${lensRadius}px at var(--lx) var(--ly), black 75%, transparent 100%)`,
+          WebkitMaskImage: `radial-gradient(${resolvedLensRadius}px ${resolvedLensRadius}px at var(--lx) var(--ly), black 75%, transparent 100%)`,
+          maskImage: `radial-gradient(${resolvedLensRadius}px ${resolvedLensRadius}px at var(--lx) var(--ly), black 75%, transparent 100%)`,
         }}
       >
         <Grid
           tiles={tiles}
-          rows={rows}
-          cols={cols}
-          gap={gap}
+          rows={resolvedRows}
+          cols={resolvedCols}
+          gap={resolvedGap}
           aspectClass={aspectClass}
           className="saturate-125 contrast-[1.06]"
         />
@@ -208,7 +222,7 @@ function Grid({
       {tiles.map((src, i) => (
         <div
           key={i}
-          className={`relative overflow-hidden rounded-lg bg-neutral-200/40 dark:bg-neutral-800/40 ${aspectClass}`}
+          className={`relative overflow-hidden rounded-lg ${aspectClass}`}
         >
           <Image
             src={src}

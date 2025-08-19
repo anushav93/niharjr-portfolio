@@ -44,7 +44,7 @@ export default function FilterBar({
 
   return (
     <div>
-      <div className="border-b border-neutral-400 dark:border-neutral-600">
+      <div className="border-b border-neutral-900">
         <div
           ref={containerRef}
           className="flex overflow-x-auto scrollbar-hide scroll-smooth"

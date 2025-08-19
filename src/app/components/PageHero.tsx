@@ -21,7 +21,10 @@ export default function PageHero({ photos }: PageHeroProps) {
           <div className="grid grid-cols-1 items-center">
             <div className="">
               <div className="text-center">
-                <Typography variant="small" className="mb-6 uppercase">
+                <Typography
+                  variant="small"
+                  className="mb-6 uppercase px-2 py-1 bg-orange-500  text-white rounded-full"
+                >
                   VISUAL STORYTELLER
                 </Typography>
                 <Typography

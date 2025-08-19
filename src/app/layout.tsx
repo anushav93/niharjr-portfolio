@@ -1,6 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -15,11 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       {/* Ensure Tailwind uses the sans stack */}
-      <body className="font-sans antialiased">
-        <header className="fixed top-0 left-0 right-0 z-50  bg-white dark:bg-neutral-950">
-          <Navbar />
-        </header>
+      <body className={inter.className}>
+        <Navbar />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import FilterBar from "../components/FilterBar";
 import ImageGrid from "../components/ImageGrid";
@@ -26,8 +26,33 @@ export default function GalleryClient({
   const searchParams = useSearchParams();
   const [active, setActive] = useState<string>(initialActive);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [shuffledPhotos, setShuffledPhotos] = useState<Photo[]>(initialPhotos);
 
-  const photos = useMemo(() => initialPhotos, [initialPhotos]);
+  // Function to shuffle an array
+  const shuffleArray = useCallback((array: Photo[]) => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  }, []);
+
+  // Manual shuffle function
+  const shufflePhotos = useCallback(() => {
+    if (active === "ALL") {
+      setShuffledPhotos(shuffleArray(shuffledPhotos));
+    }
+  }, [active, shuffleArray, shuffledPhotos]);
+
+  // Initialize shuffled photos and handle filter changes
+  useEffect(() => {
+    if (active === "ALL") {
+      setShuffledPhotos(shuffleArray(initialPhotos));
+    } else {
+      setShuffledPhotos(initialPhotos);
+    }
+  }, [active, initialPhotos, shuffleArray]);
 
   const updateFilter = (next: string) => {
     setActive(next);
@@ -39,15 +64,18 @@ export default function GalleryClient({
 
   return (
     <div>
-      <div className="border-b border-neutral-400 dark:border-neutral-600">
+      <div className="border-t border-neutral-900 mt-20">
         <FilterBar filters={filters} active={active} onChange={updateFilter} />
       </div>
       <div className="py-12">
-        <ImageGrid photos={photos} onSelect={(i) => setLightboxIndex(i)} />
+        <ImageGrid
+          photos={shuffledPhotos}
+          onSelect={(i) => setLightboxIndex(i)}
+        />
       </div>
       <Lightbox
         isOpen={lightboxIndex !== null}
-        photos={photos}
+        photos={shuffledPhotos}
         index={lightboxIndex ?? 0}
         onClose={() => setLightboxIndex(null)}
         onIndexChange={(idx) => setLightboxIndex(idx)}

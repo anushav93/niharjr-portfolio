@@ -5,12 +5,15 @@ import Typography from "@/components/Typography";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-950 pt-20">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="py-20 border-b border-neutral-900">
+      <section className="pt-32 pb-20 border-b border-neutral-900 ">
         <div className="w-full px-6 lg:px-8">
           <div className="text-center">
-            <Typography variant="small" className="mb-6 uppercase">
+            <Typography
+              variant="small"
+              className="mb-6 uppercase px-2 py-1 bg-amber-500 text-white rounded-full"
+            >
               About
             </Typography>
             <Typography variant="h1" fontWeight="light" className="mb-4 mt-8">
