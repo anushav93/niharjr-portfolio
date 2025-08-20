@@ -1,8 +1,6 @@
-import nodemailer from 'nodemailer';
-import './server'; // Import the server marker
-
-// Add a server-only directive
-export const dynamic = 'force-dynamic';
+import { Resend } from 'resend';
+import { renderAsync } from '@react-email/render';
+import ContactFormEmail from '@/emails/ContactFormEmail';
 
 export interface EmailPayload {
   name: string;
@@ -10,52 +8,34 @@ export interface EmailPayload {
   message: string;
 }
 
-export async function sendMailWithNodemailer(data: EmailPayload) {
-  const { name, email, message } = data;
-  
-  // Configure nodemailer with your email provider
-  const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.EMAIL_PORT || '587'),
-    secure: process.env.EMAIL_SECURE === 'true',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-  // Email content
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: 'vuday23@gmail.com',
-    subject: `Contact Form: Message from ${name}`,
-    text: `
-      Name: ${name}
-      Email: ${email}
-      
-      Message: 
-      ${message}
-    `,
-    html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
-        <h2 style="color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px;">New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 4px;">
-          <p><strong>Message:</strong></p>
-          <p style="white-space: pre-line;">${message}</p>
-        </div>
-      </div>
-    `,
-    // Send a copy to the sender
-    replyTo: email,
-  };
+export async function sendEmail(data: EmailPayload) {
+  const { name, email, message } = data;
 
   try {
-    await transporter.sendMail(mailOptions);
-    return { success: true };
+    // Render the React email template to HTML
+    const html = await renderAsync(ContactFormEmail({ name, email, message }));
+
+    // For testing, we'll use the resend.dev domain which is allowed for testing
+    const { data: resData, error } = await resend.emails.send({
+      from: 'Portfolio Contact <onboarding@resend.dev>',
+      to: ['vuday23@gmail.com'],
+      bcc: ['niharjreddy@gmail.com'],
+      subject: `New Contact Form Message from ${name}`,
+      html,
+      replyTo: email,
+    });
+
+    if (error) {
+      console.error('Error sending email:', error);
+      throw new Error('Failed to send email');
+    }
+
+    console.log('Email sent successfully:', resData); // Added for testing
+    return { success: true, data: resData };
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error in sendEmail:', error);
     throw new Error('Failed to send email');
   }
-} 
+}

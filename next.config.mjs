@@ -5,7 +5,6 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   experimental: {
-    // Remove appDir since it's now the default in Next.js 14+
     nextScriptWorkers: true,
   },
   // Updated from experimental.serverComponentsExternalPackages
@@ -26,6 +25,9 @@ const nextConfig = {
     '@heroicons/react': {
       transform: '@heroicons/react/{{member}}',
     },
+  },
+  env: {
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
