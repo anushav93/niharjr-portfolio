@@ -17,11 +17,11 @@ interface ContactFormEmailProps {
   message: string;
 }
 
-export const ContactFormEmail = ({
+const ContactFormEmail: React.FC<ContactFormEmailProps> = ({
   name,
   email,
   message,
-}: ContactFormEmailProps) => {
+}) => {
   const previewText = `New message from ${name}`;
 
   return (
