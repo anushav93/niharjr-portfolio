@@ -9,12 +9,12 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Nihar J Reddy Photography",
   description: "Professional photographer specializing in capturing lifes beautiful moments through creative and artistic photography",
-  metadataBase: new URL("https://niharjr.com"),
+  metadataBase: new URL("https://niharjreddy.com"),
   openGraph: {
     title: "Nihar J Reddy Photography",
     description: "Professional photographer specializing in capturing lifes beautiful moments through creative and artistic photography",
     images: [{
-      url: "/images/nihar-social.png",
+      url: "/images/nihar-social-optimized.webp",
       width: 1200,
       height: 630,
       alt: "Nihar J Reddy Photography"
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Nihar J Reddy Photography",
     description: "Professional photographer specializing in capturing lifes beautiful moments through creative and artistic photography",
-    images: ["/images/nihar-social.png"],
+          images: ["/images/nihar-social-optimized.webp"],
     creator: "@niharjr"
   },
   robots: {
