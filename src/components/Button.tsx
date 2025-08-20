@@ -24,7 +24,7 @@ const Button: React.FC<ButtonProps> = ({
   target,
 }) => {
   const baseClasses =
-    "text-xl w-full border border-neutral-900 p-6 font-medium transition-all duration-300 ease-in-out flex items-center justify-center relative group disabled:opacity-50 disabled:cursor-not-allowed";
+    "text-base md:text-xl w-full border border-neutral-900 p-6 font-medium transition-all duration-300 ease-in-out flex items-center justify-center relative group disabled:opacity-50 disabled:cursor-not-allowed";
 
   const variantClasses = {
     dark: "bg-neutral-900 text-white hover:bg-neutral-800",
