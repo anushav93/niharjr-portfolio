@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Button from "./Button";
 import Typography from "./Typography";
 import { motion } from "framer-motion";
-import { sendEmail } from "@/lib/email";
 
 const ContactForm: React.FC = () => {
   const [name, setName] = useState("");
@@ -34,11 +33,23 @@ const ContactForm: React.FC = () => {
       setStatus("loading");
       setError("");
 
-      await sendEmail({
-        name,
-        email,
-        message,
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+        }),
       });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message');
+      }
 
       setStatus("success");
 
@@ -51,7 +62,7 @@ const ContactForm: React.FC = () => {
       }, 3000);
     } catch (err) {
       setStatus("error");
-      setError("Failed to send message. Please try again.");
+      setError(err instanceof Error ? err.message : 'Failed to send message. Please try again.');
     }
   };
 
