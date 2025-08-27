@@ -1,5 +1,3 @@
-import Container from "../components/Container";
-import SectionHeading from "../components/SectionHeading";
 import GalleryClient from "./GalleryClient";
 import Typography from "@/components/Typography";
 import { UNSPLASH_ACCESS_KEY, UNSPLASH_USERNAME } from "@/functions/config";
@@ -41,16 +39,17 @@ async function fetchCollections(): Promise<Collection[]> {
 export default async function GalleryPage({
   searchParams,
 }: {
-  searchParams: { filter?: string };
+  searchParams: Promise<{ filter?: string }>;
 }) {
   const collections = await fetchCollections();
+  const resolvedSearchParams = await searchParams;
   const filters = [
     "ALL",
     ...Array.from(new Set(collections.map((c) => c.title))),
   ] as string[];
   const active =
-    searchParams?.filter && filters.includes(searchParams.filter)
-      ? searchParams.filter
+    resolvedSearchParams?.filter && filters.includes(resolvedSearchParams.filter)
+      ? resolvedSearchParams.filter
       : "ALL";
   const photos =
     active === "ALL"

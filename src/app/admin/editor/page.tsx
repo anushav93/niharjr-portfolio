@@ -27,16 +27,11 @@ export default function SimpleEditorPage() {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        console.log('Fetching content from Sanity...')
-        
         const [homepage, aboutPage, siteSettings] = await Promise.all([
           client.fetch('*[_type == "homepage"][0]'),
           client.fetch('*[_type == "aboutPage"][0]'),
           client.fetch('*[_type == "siteSettings"][0]')
         ])
-        
-        console.log('Fetched content:', { homepage, aboutPage, siteSettings })
-        console.log('About page content:', aboutPage)
         
         setContent({ homepage, aboutPage, siteSettings })
       } catch (error) {

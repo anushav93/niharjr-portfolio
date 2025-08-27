@@ -42,7 +42,7 @@ export default async function HomePage() {
       }))
     : fallbackHeroPhotos;
 
-console.log('Hero photos:', homepageData);
+
   // Use CMS data or fallback content
   const content = {
     hero: {
