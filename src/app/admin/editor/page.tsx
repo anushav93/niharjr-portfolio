@@ -22,6 +22,7 @@ export default function SimpleEditorPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('homepage')
   const [isSaving, setIsSaving] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
   const [saveStatus, setSaveStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' })
 
   useEffect(() => {
@@ -121,6 +122,40 @@ export default function SimpleEditorPage() {
       callbackUrl: '/',
       redirect: true 
     })
+  }
+
+  const handlePortraitImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setIsUploading(true)
+    try {
+      // Create a FormData object to upload the file
+      const formData = new FormData()
+      formData.append('file', file)
+      
+      // Upload to Sanity using the client.assets.upload method
+      const asset = await client.assets.upload('image', file)
+      
+      // Update the content state with the new image
+      setContent(prev => ({
+        ...prev,
+        aboutPage: {
+          ...prev.aboutPage,
+          story: {
+            ...prev.aboutPage?.story,
+            portraitImage: asset
+          }
+        }
+      }))
+      
+      console.log('Image uploaded successfully:', asset)
+    } catch (error) {
+      console.error('Failed to upload image:', error)
+      setSaveStatus({ type: 'error', message: 'Failed to upload image. Please try again.' })
+    } finally {
+      setIsUploading(false)
+    }
   }
 
   // If not authenticated, show authentication required message
@@ -857,11 +892,31 @@ export default function SimpleEditorPage() {
                   <label className="block text-sm uppercase tracking-wide text-neutral-600 mb-3">
                     Portrait Image
                   </label>
+                  
+                  {/* Current Image Display */}
+                  {content.aboutPage?.story?.portraitImage && (
+                    <div className="mb-4">
+                      <img 
+                        src={urlFor(content.aboutPage.story.portraitImage).width(200).height(200).fit('crop').url()}
+                        alt="Current portrait"
+                        className="w-32 h-32 object-cover rounded-lg border border-neutral-300"
+                      />
+                      <p className="text-sm text-neutral-500 mt-2">Current image</p>
+                    </div>
+                  )}
+                  
+                  {/* File Upload */}
                   <input
                     type="file"
                     accept="image/*"
+                    onChange={handlePortraitImageChange}
                     className="w-full text-sm text-neutral-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-neutral-100 file:text-neutral-700 hover:file:bg-neutral-200"
                   />
+                  
+                  {/* Upload Status */}
+                  {isUploading && (
+                    <p className="text-sm text-blue-600 mt-2">Uploading image...</p>
+                  )}
                 </div>
               </div>
 

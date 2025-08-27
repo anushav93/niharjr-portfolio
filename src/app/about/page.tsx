@@ -10,7 +10,7 @@ export const revalidate = 0;
 export default async function AboutPage() {
   // Fetch about page content from Sanity CMS
   const aboutData = await getAboutPage();
-
+  console.log('About data:', aboutData);
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -56,8 +56,8 @@ export default async function AboutPage() {
                   )}
                 </div>
                 <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white">
-                  <div className="text-2xl font-bold">{aboutData?.story?.yearsExperience || 5}+</div>
-                  <div className="text-sm opacity-90">Years Experience</div>
+                <div className="text-sm opacity-90">Since</div>
+                  <div className="text-2xl font-bold">{aboutData?.story?.yearsExperience || 2011}</div>
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@ export default async function AboutPage() {
                 {aboutData?.story?.skills?.map((skill) => (
                   <span
                     key={skill}
-                    className="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-4 py-2 rounded-full text-sm font-medium"
+                    className="border border-neutral-900 text-neutral-700 dark:text-neutral-300 px-4 py-2 text-sm font-medium"
                   >
                     {skill}
                   </span>
