@@ -2,8 +2,15 @@ import React from "react";
 import Typography from "@/components/Typography";
 import Container from "@/components/Container";
 import ContactForm from "@/components/ContactForm";
+import { getSiteSettings } from "@/lib/sanity";
 
-const ContactPage: React.FC = () => {
+// Force revalidation on every request
+export const revalidate = 0;
+
+const ContactPage: React.FC = async () => {
+  // Fetch site settings from Sanity CMS
+  const siteData = await getSiteSettings();
+
   return (
     <div className="pt-12">
       <Container>
@@ -18,11 +25,53 @@ const ContactPage: React.FC = () => {
             Get in Touch
           </Typography>
           <Typography variant="p" className="max-w-2xl mx-auto mt-4">
-            I&apos;m always excited to connect with new people. Whether you have
-            a question, a project proposal, or just want to say hello, feel free
-            to reach out.
+            {siteData?.contactInfo?.availability?.availabilityMessage || 
+              "I'm always excited to connect with new people. Whether you have a question, a project proposal, or just want to say hello, feel free to reach out."}
           </Typography>
         </div>
+        
+        {/* Contact Information from CMS */}
+        {siteData?.contactInfo && (
+          <div className="max-w-4xl mx-auto mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+              {siteData.contactInfo.email && (
+                <div className="p-6 border border-neutral-200 rounded-lg">
+                  <Typography variant="h4" className="mb-2">Email</Typography>
+                  <Typography variant="p" className="text-blue-600">
+                    <a href={`mailto:${siteData.contactInfo.email}`}>
+                      {siteData.contactInfo.email}
+                    </a>
+                  </Typography>
+                </div>
+              )}
+              {siteData.contactInfo.phone && (
+                <div className="p-6 border border-neutral-200 rounded-lg">
+                  <Typography variant="h4" className="mb-2">Phone</Typography>
+                  <Typography variant="p" className="text-blue-600">
+                    <a href={`tel:${siteData.contactInfo.phone}`}>
+                      {siteData.contactInfo.phone}
+                    </a>
+                  </Typography>
+                </div>
+              )}
+              {siteData.contactInfo.location && (
+                <div className="p-6 border border-neutral-200 rounded-lg">
+                  <Typography variant="h4" className="mb-2">Location</Typography>
+                  <Typography variant="p">{siteData.contactInfo.location}</Typography>
+                </div>
+              )}
+              {siteData.contactInfo.availability && (
+                <div className="p-6 border border-neutral-200 rounded-lg">
+                  <Typography variant="h4" className="mb-2">Availability</Typography>
+                  <Typography variant="p" className={siteData.contactInfo.availability.isAvailable ? "text-green-600" : "text-red-600"}>
+                    {siteData.contactInfo.availability.isAvailable ? "Available for new projects" : "Currently booked"}
+                  </Typography>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+        
         <div className="max-w-2xl mx-auto pb-20">
           <ContactForm />
         </div>

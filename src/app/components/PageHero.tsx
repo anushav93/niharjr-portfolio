@@ -9,9 +9,12 @@ type HeroPhoto = {
 
 type PageHeroProps = {
   photos: HeroPhoto[];
+  tagline?: string;
+  title?: string;
+  description?: string;
 };
 
-export default function PageHero({ photos }: PageHeroProps) {
+export default function PageHero({ photos, tagline, title, description }: PageHeroProps) {
   const imageUrls = photos.map((p) => p.src);
 
   return (
@@ -25,20 +28,19 @@ export default function PageHero({ photos }: PageHeroProps) {
                   variant="small"
                   className="mb-6 uppercase px-2 py-1 bg-orange-500  text-white rounded-full"
                 >
-                  VISUAL STORYTELLER
+                  {tagline || 'VISUAL STORYTELLER'}
                 </Typography>
                 <Typography
                   variant="h1"
                   className="font-light tracking-tighter mb-4 mt-8"
                 >
-                  NIHAR J REDDY
+                  {title || 'NIHAR J REDDY'}
                 </Typography>
                 <Typography
                   variant="p"
                   className="mx-auto md:mx-0 text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 mb-8"
                 >
-                  Capturing authentic moments and creating compelling narratives
-                  through the lens
+                  {description || 'Capturing authentic moments and creating compelling narratives through the lens'}
                 </Typography>
               </div>
               <AnimatedImageStack

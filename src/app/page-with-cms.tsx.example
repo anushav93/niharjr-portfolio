@@ -1,4 +1,8 @@
-import Container from "@/components/Container";
+// Example of how your homepage will look with CMS integration
+// This file shows the updated homepage component using Sanity CMS data
+// Once you're ready, you can replace your current page.tsx with this code
+
+import Container from "./components/Container";
 import PageHero from "./components/PageHero";
 import SectionHeading from "./components/SectionHeading";
 import PhotoCard from "./components/PhotoCard";
@@ -7,85 +11,70 @@ import Button from "@/components/Button";
 import { getHomepage, urlFor } from "@/lib/sanity";
 import type { Homepage } from "@/lib/sanity";
 
-// Force revalidation on every request
-export const revalidate = 0;
-
-// Fallback images if CMS content isn't available
-const fallbackHeroPhotos = [
-  { src: "/images/1.jpeg", alt: "Featured 1" },
-  { src: "/images/2.jpeg", alt: "Featured 2" },
-  { src: "/images/3.jpeg", alt: "Featured 3" },
-  { src: "/images/4.jpeg", alt: "Featured 4" },
-  { src: "/images/5.jpeg", alt: "Featured 5" },
-  { src: "/images/6.jpeg", alt: "Featured 6" },
-];
-
+// This will be a server component that fetches data from Sanity
 export default async function HomePage() {
-  // Fetch homepage content from Sanity CMS with no caching
+  // Fetch homepage content from Sanity CMS
   const homepageData: Homepage | null = await getHomepage();
   
-
-
-  // Transform hero images from CMS or use fallback
-  const heroPhotos = homepageData?.hero?.heroImages?.length 
-    ? homepageData.hero.heroImages.map((img: any, index: number) => ({
-        src: img ? urlFor(img).width(800).height(600).url() : fallbackHeroPhotos[index]?.src,
-        alt: `Hero image ${index + 1}`
-      }))
-    : fallbackHeroPhotos;
-
-  // Transform featured work images from CMS or use fallback
-  const featuredImages = homepageData?.featuredWork?.featuredImages?.length 
-    ? homepageData.featuredWork.featuredImages.map((img: any, index: number) => ({
-        src: img ? urlFor(img).width(800).height(600).url() : fallbackHeroPhotos[index]?.src,
-        alt: `Featured work ${index + 1}`
-      }))
-    : fallbackHeroPhotos;
-
-console.log('Hero photos:', homepageData);
-  // Use CMS data or fallback content
-  const content = {
+  // Fallback to default content if CMS data isn't available
+  const defaultContent = {
     hero: {
-      tagline: homepageData?.hero?.tagline || 'VISUAL STORYTELLER',
-      title: homepageData?.hero?.title || 'NIHAR J REDDY',
-      description: homepageData?.hero?.description || 'Capturing authentic moments and creating compelling narratives through the lens'
+      tagline: "VISUAL STORYTELLER",
+      title: "NIHAR J REDDY", 
+      description: "Capturing authentic moments and creating compelling narratives through the lens",
+      heroImages: []
     },
     missionStatement: {
-      title: homepageData?.missionStatement?.title || 'Every Frame Tells a Story',
-      description: homepageData?.missionStatement?.description || 'Through my lens, I capture the extraordinary in the ordinary, creating visual narratives that resonate with emotion and authenticity.'
+      title: "Every Frame Tells a Story",
+      description: "Through my lens, I capture the extraordinary in the ordinary, creating visual narratives that resonate with emotion and authenticity."
     },
-    categories: homepageData?.categories || [
+    categories: [
       {
         label: "NATURE",
-        title: "Landscapes", 
+        title: "Landscapes",
         description: "Capturing the raw beauty and serene moments found in natural environments, from mountains to coastlines.",
         galleryFilter: "Nature+and+the+Landscapes",
       },
       {
         label: "CONSTRUCTION SITE",
-        title: "People",
+        title: "People", 
         description: "A collection of portraits and candid moments that tell the stories of individuals from diverse backgrounds.",
         galleryFilter: "Construction+Site",
       },
       {
         label: "HEARTS",
-        title: "Melting hearts", 
+        title: "Melting hearts",
         description: "A series focused on capturing intimate and heartfelt connections between people.",
         galleryFilter: "Melting+Hearts",
       },
     ],
     featuredWork: {
-      sectionTitle: homepageData?.featuredWork?.sectionTitle || 'Latest Captures',
-      sectionDescription: homepageData?.featuredWork?.sectionDescription || 'A curated selection of my most recent work, showcasing diverse styles and subjects.',
-      buttonText: homepageData?.featuredWork?.buttonText || 'View All Work'
+      sectionTitle: "Latest Captures",
+      sectionDescription: "A curated selection of my most recent work, showcasing diverse styles and subjects.",
+      buttonText: "View All Work"
     }
   };
 
+  // Use CMS data if available, otherwise use defaults
+  const content = homepageData || defaultContent;
+
+  // Transform hero images from CMS for the PageHero component
+  const heroPhotos = content.hero.heroImages?.map((img: any) => ({
+    src: img ? urlFor(img).width(800).height(600).url() : '',
+    alt: img?.alt || 'Hero image'
+  })) || [
+    // Fallback to current static images if no CMS images
+    { src: "/images/1.jpeg", alt: "Featured 1" },
+    { src: "/images/2.jpeg", alt: "Featured 2" },
+    { src: "/images/3.jpeg", alt: "Featured 3" },
+    { src: "/images/4.jpeg", alt: "Featured 4" },
+    { src: "/images/5.jpeg", alt: "Featured 5" },
+    { src: "/images/6.jpeg", alt: "Featured 6" },
+  ];
+
   return (
     <div className="pt-20">
-
-      
-      {/* Hero Section with CMS content */}
+      {/* Hero Section - now powered by CMS */}
       <section className="">
         <PageHero 
           photos={heroPhotos}
@@ -95,7 +84,7 @@ console.log('Hero photos:', homepageData);
         />
       </section>
 
-      {/* Mission statement section with CMS content */}
+      {/* Mission statement section - now powered by CMS */}
       <section className="py-20 border-b border-neutral-900">
         <div className="w-full px-6 lg:px-8">
           <div className="text-center">
@@ -109,14 +98,14 @@ console.log('Hero photos:', homepageData);
         </div>
       </section>
 
-      {/* Three-column grid with CMS content */}
+      {/* Three-column grid - now powered by CMS */}
       <section className="relative border-b border-neutral-900">
         <div className="w-full">
           <div className="grid grid-cols-1 md:grid-cols-3 divide-y divide-neutral-900 md:divide-y-0 md:divide-x">
-            {content.categories.map((category: any, idx: number) => (
+            {content.categories.map((category, idx) => (
               <a
                 key={idx}
-                href={`/gallery?filter=${category.galleryFilter}`}
+                href={`/gallery?filter=${encodeURIComponent(category.galleryFilter)}`}
                 className="block p-8 md:p-12 lg:p-16 focus-visible:outline-current transition-all duration-300 group"
               >
                 <Typography variant="small" className="mt-8 uppercase">
@@ -138,7 +127,7 @@ console.log('Hero photos:', homepageData);
         </div>
       </section>
 
-      {/* Featured work section with CMS content */}
+      {/* Featured work section - now with CMS content */}
       <section className="pt-20">
         <div className="w-full space-y-16">
           <div className="text-center">
@@ -153,8 +142,9 @@ console.log('Hero photos:', homepageData);
             </Typography>
           </div>
 
+          {/* Keep your existing featured images for now */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-t border-neutral-900">
-            {featuredImages.slice(0, 6).map((p, idx) => (
+            {heroPhotos.slice(0, 6).map((p, idx) => (
               <div
                 key={idx}
                 className="group p-4 transition-all duration-700 ease-in-out"
@@ -171,6 +161,7 @@ console.log('Hero photos:', homepageData);
           </div>
         </div>
       </section>
+      
       <div className="flex justify-center pb-32">
         <Button href="/gallery" className="w-full text-center" variant="light">
           {content.featuredWork.buttonText}
@@ -179,3 +170,17 @@ console.log('Hero photos:', homepageData);
     </div>
   );
 }
+
+// Optional: Add this function to update your PageHero component to accept CMS content
+/* 
+You might want to update your PageHero component to accept these new props:
+
+interface PageHeroProps {
+  photos: HeroPhoto[]
+  tagline?: string
+  title?: string
+  description?: string
+}
+
+Then use the props in the component instead of hardcoded values.
+*/

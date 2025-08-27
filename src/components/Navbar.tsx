@@ -29,11 +29,10 @@ const Navbar: React.FC = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 w-full px-6 lg:px-8 h-20 flex items-center justify-between text-neutral-900 dark:text-white bg-white dark:bg-black border-b border-neutral-400 dark:border-neutral-600">
         <Link href="/" className="flex items-center gap-2">
           <img
-            src="/njrlogo.svg"
+            src="/logo.svg"
             alt="Nihar J Reddy"
-            className="h-8 w-8 brightness-0 dark:invert"
+            className="h-12 lg:h-14 w-auto transition-all duration-300 ease-in-out"
           />
-          <span className="text-base font-medium tracking-tight">NJ Reddy</span>
         </Link>
 
         {/* Desktop Menu */}
