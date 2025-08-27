@@ -28,10 +28,16 @@ const ContactPage: React.FC = async () => {
             {siteData?.contactInfo?.availability?.availabilityMessage || 
               "I'm always excited to connect with new people. Whether you have a question, a project proposal, or just want to say hello, feel free to reach out."}
           </Typography>
+
+          {/* <div className="mt-6 px-4 py-2 w-fit bg-green-500 animate-pulse text-white rounded-full mx-auto">
+            <Typography variant="small" className="mb-2 text-white">
+              Available for new projects
+            </Typography> 
+          </div> */}
         </div>
         
         {/* Contact Information from CMS */}
-        {siteData?.contactInfo && (
+        {/* {siteData?.contactInfo && (
           <div className="max-w-4xl mx-auto mb-16">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
               {siteData.contactInfo.email && (
@@ -70,7 +76,7 @@ const ContactPage: React.FC = async () => {
               )}
             </div>
           </div>
-        )}
+        )} */}
         
         <div className="max-w-2xl mx-auto pb-20">
           <ContactForm />
