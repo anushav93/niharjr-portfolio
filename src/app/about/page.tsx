@@ -1,6 +1,4 @@
 import Button from "@/components/Button";
-import Container from "@/components/Container";
-import SectionHeading from "../components/SectionHeading";
 import Typography from "@/components/Typography";
 import { getAboutPage, urlFor } from "@/lib/sanity";
 
@@ -10,7 +8,6 @@ export const revalidate = 0;
 export default async function AboutPage() {
   // Fetch about page content from Sanity CMS
   const aboutData = await getAboutPage();
-  console.log('About data:', aboutData);
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
