@@ -6,6 +6,27 @@ type Photo = {
   alt_description?: string | null;
 };
 
+// Helper function to generate srcset for Unsplash images in lightbox
+const generateLightboxSrcSet = (photo: Photo) => {
+  if (!photo.urls.full) return '';
+  
+  // Extract the base URL without size parameters
+  const baseUrl = photo.urls.full.split('?')[0];
+  
+  // Generate different sizes for lightbox (larger sizes since it's full-screen)
+  const sizes = [
+    { width: 800, descriptor: '800w' },
+    { width: 1200, descriptor: '1200w' },
+    { width: 1600, descriptor: '1600w' },
+    { width: 2000, descriptor: '2000w' },
+    { width: 2400, descriptor: '2400w' }
+  ];
+  
+  return sizes
+    .map(({ width, descriptor }) => `${baseUrl}?w=${width}&q=85 ${descriptor}`)
+    .join(', ');
+};
+
 type LightboxProps = {
   isOpen: boolean;
   photos: Photo[];
@@ -88,6 +109,8 @@ export default function Lightbox({
 
       <img
         src={photo.urls.full || photo.urls.regular || ""}
+        srcSet={generateLightboxSrcSet(photo)}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 80vw"
         alt={photo.alt_description || ""}
         className="max-h-[80vh] w-auto object-contain"
       />

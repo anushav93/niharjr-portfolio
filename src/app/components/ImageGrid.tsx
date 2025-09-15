@@ -8,6 +8,27 @@ type Photo = {
   user?: { name?: string };
 };
 
+// Helper function to generate srcset for Unsplash images
+const generateSrcSet = (photo: Photo) => {
+  if (!photo.urls.regular) return '';
+  
+  // Extract the base URL without size parameters
+  const baseUrl = photo.urls.regular.split('?')[0];
+  
+  // Generate different sizes for srcset
+  const sizes = [
+    { width: 300, descriptor: '300w' },
+    { width: 600, descriptor: '600w' },
+    { width: 800, descriptor: '800w' },
+    { width: 1200, descriptor: '1200w' },
+    { width: 1600, descriptor: '1600w' }
+  ];
+  
+  return sizes
+    .map(({ width, descriptor }) => `${baseUrl}?w=${width}&q=80 ${descriptor}`)
+    .join(', ');
+};
+
 type ImageGridProps = {
   photos: Photo[];
   onSelect?: (index: number) => void;
@@ -38,9 +59,9 @@ const ImageGrid = React.memo(function ImageGrid({ photos, onSelect }: ImageGridP
         >
           <div className="relative overflow-hidden bg-neutral-100 dark:bg-neutral-800 aspect-[4/5]">
             <img
-              src={
-                photo.urls.regular || photo.urls.small || photo.urls.full || ""
-              }
+              src={photo.urls.regular || photo.urls.small || photo.urls.full || ""}
+              srcSet={generateSrcSet(photo)}
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
               alt={photo.alt_description || photo.description || "Photo"}
               className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
               loading="lazy"

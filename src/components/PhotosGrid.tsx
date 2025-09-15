@@ -24,6 +24,27 @@ interface Photo {
   };
 }
 
+// Helper function to generate srcset for Unsplash images
+const generateSrcSet = (photo: Photo) => {
+  if (!photo.urls.regular) return '';
+  
+  // Extract the base URL without size parameters
+  const baseUrl = photo.urls.regular.split('?')[0];
+  
+  // Generate different sizes for srcset
+  const sizes = [
+    { width: 300, descriptor: '300w' },
+    { width: 600, descriptor: '600w' },
+    { width: 800, descriptor: '800w' },
+    { width: 1200, descriptor: '1200w' },
+    { width: 1600, descriptor: '1600w' }
+  ];
+  
+  return sizes
+    .map(({ width, descriptor }) => `${baseUrl}?w=${width}&q=80 ${descriptor}`)
+    .join(', ');
+};
+
 const Modal: React.FC<{
   photo: Photo;
   onClose: () => void;
@@ -331,6 +352,8 @@ const PhotoGrid: React.FC<{ photos: Photo[] }> = ({ photos }) => {
           >
             <img
               src={photo.urls.regular}
+              srcSet={photo.urls.regular ? generateSrcSet(photo) : ''}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               alt={photo.alt_description || "Unsplash photo"}
               className="w-full  cursor-pointer hover:opacity-90 transition-opacity"
             />
