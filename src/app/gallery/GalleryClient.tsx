@@ -28,7 +28,7 @@ export default function GalleryClient({
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [shuffledPhotos, setShuffledPhotos] = useState<Photo[]>(initialPhotos);
 
-  // Function to shuffle an array
+  // Function to shuffle an array - memoized without dependencies
   const shuffleArray = useCallback((array: Photo[]) => {
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i--) {
@@ -41,9 +41,9 @@ export default function GalleryClient({
   // Manual shuffle function
   const shufflePhotos = useCallback(() => {
     if (active === "ALL") {
-      setShuffledPhotos(shuffleArray(shuffledPhotos));
+      setShuffledPhotos(prev => shuffleArray(prev));
     }
-  }, [active, shuffleArray, shuffledPhotos]);
+  }, [active, shuffleArray]);
 
   // Initialize shuffled photos and handle filter changes
   useEffect(() => {

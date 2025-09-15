@@ -50,18 +50,8 @@ export default function FilterBar({
       const scrollLeft = container.scrollLeft;
       const maxScrollLeft = container.scrollWidth - container.clientWidth;
       
-      // Debug logging (remove this if not needed)
       const shouldScrollLeft = scrollLeft > 1;
       const shouldScrollRight = scrollLeft < maxScrollLeft - 1;
-      
-      console.log('Scroll Debug:', {
-        scrollLeft: scrollLeft,
-        maxScrollLeft: maxScrollLeft,
-        scrollWidth: container.scrollWidth,
-        clientWidth: container.clientWidth,
-        canScrollLeft: shouldScrollLeft,
-        canScrollRight: shouldScrollRight
-      });
       
       setCanScrollLeft(shouldScrollLeft);
       setCanScrollRight(shouldScrollRight);
@@ -89,6 +79,14 @@ export default function FilterBar({
         window.removeEventListener("resize", updateScrollState);
       };
     }
+    
+    // Always return cleanup function, even if container is null
+    return () => {
+      if (container) {
+        container.removeEventListener("scroll", checkScrollState);
+      }
+      window.removeEventListener("resize", updateScrollState);
+    };
   }, [filters]);
 
   // Also check scroll state after the component fully mounts
