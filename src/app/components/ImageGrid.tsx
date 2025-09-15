@@ -14,6 +14,7 @@ type ImageGridProps = {
 };
 
 export default function ImageGrid({ photos, onSelect }: ImageGridProps) {
+  console.log(photos);
   if (photos.length === 0) {
     return (
       <div className="text-center py-20 ">
@@ -32,7 +33,7 @@ export default function ImageGrid({ photos, onSelect }: ImageGridProps) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2  ">
       {photos.map((photo, index) => (
         <div
-          key={photo.id ?? index}
+          key={photo.id+index}
           className="group cursor-pointer"
           onClick={() => onSelect?.(index)}
         >
