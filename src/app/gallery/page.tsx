@@ -1,3 +1,4 @@
+"use client";
 import GalleryClient from "./GalleryClient";
 import Typography from "@/components/Typography";
 import { UNSPLASH_ACCESS_KEY, UNSPLASH_USERNAME } from "@/functions/config";
