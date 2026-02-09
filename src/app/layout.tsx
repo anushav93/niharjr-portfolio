@@ -2,9 +2,10 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Providers from "@/components/Providers";
 import ConditionalLayout from "@/components/ConditionalLayout";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
 
 export const metadata: Metadata = {
   title: "Nihar J Reddy Photography",
@@ -57,7 +58,7 @@ export default function RootLayout({
         />
       </head>
       {/* Ensure Tailwind uses the sans stack */}
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${playfair.variable} font-sans`}>
         <Providers>
           <ConditionalLayout>
             {children}

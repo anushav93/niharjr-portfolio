@@ -1,5 +1,5 @@
 import GalleryClient from "./GalleryClient";
-import Typography from "@/components/Typography";
+import { getGalleryCollections } from "@/lib/contentful";
 import { UNSPLASH_ACCESS_KEY, UNSPLASH_USERNAME } from "@/functions/config";
 import { Suspense } from "react";
 
@@ -16,7 +16,38 @@ type Photo = {
 
 type Collection = { id: string; title: string; photos: Photo[] };
 
+/**
+ * Fetch from Contentful first, fallback to Unsplash if no content
+ */
 async function fetchCollections(): Promise<Collection[]> {
+  // Try Contentful first
+  try {
+    const contentfulCollections = await getGalleryCollections();
+    
+    if (contentfulCollections.length > 0) {
+      // Transform Contentful format to match expected format
+      return contentfulCollections.map((collection) => ({
+        id: collection.id,
+        title: collection.name,
+        photos: collection.photos.map((photo) => ({
+          id: photo.id,
+          title: photo.title,
+          alt_description: photo.alt,
+          description: photo.title,
+          urls: {
+            small: `${photo.url}?w=400&fm=webp&q=80`,
+            regular: `${photo.url}?w=1080&fm=webp&q=85`,
+            full: photo.url,
+          },
+          user: { name: 'Portfolio' },
+        })),
+      }));
+    }
+  } catch (error) {
+    console.error('Error fetching from Contentful:', error);
+  }
+
+  // Fallback to Unsplash
   try {
     const username = UNSPLASH_USERNAME;
     const headers = { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` } as any;
@@ -103,49 +134,44 @@ export default async function GalleryPage({
       : collections.find((c) => c.title === active)?.photos ?? [];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-900 ">
-      {/* Gallery Hero */}
-      <section className="pt-32 ">
-        <div className="w-full px-6 lg:px-8">
-          <div className="text-center">
-            <Typography
-              variant="small"
-              className="mb-6 uppercase px-2 py-1 bg-green-500 text-white rounded-full"
-            >
+    <div className="min-h-screen bg-stone-200">
+      {/* Gallery Header with accent */}
+      <div className="relative">
+        <div className="absolute top-20 left-0 w-24 h-1 bg-primary-500" />
+        
+        <div className="pt-32 pb-12 px-6 text-center max-w-4xl mx-auto">
+          <div className="inline-block mb-4">
+            <p className="text-xs tracking-[0.3em] uppercase text-primary-600 mb-2 font-medium">
               Gallery
-            </Typography>
-            <Typography variant="h1" fontWeight="light" className="mb-4 mt-8">
-              Visual Collection
-            </Typography>
-            <Typography variant="p" className="max-w-3xl mx-auto">
-              Explore my complete portfolio of photography work, organized by
-              style and subject matter.
-            </Typography>
+            </p>
+            <div className="h-px w-full bg-primary-400" />
           </div>
+          
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-text-primary mb-4">
+            Portfolio
+          </h1>
         </div>
-      </section>
+      </div>
 
       {/* Gallery Content */}
-      <section className="">
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center py-20">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-neutral-900 dark:border-neutral-100 mx-auto mb-4"></div>
-                <p className="text-neutral-600 dark:text-neutral-300">
-                  Loading gallery...
-                </p>
-              </div>
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center py-20">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+              <p className="text-xs tracking-wider uppercase text-text-secondary">
+                Loading gallery...
+              </p>
             </div>
-          }
-        >
-          <GalleryClient
-            filters={filters}
-            initialActive={active}
-            initialPhotos={photos}
-          />
-        </Suspense>
-      </section>
+          </div>
+        }
+      >
+        <GalleryClient
+          filters={filters}
+          initialActive={active}
+          initialPhotos={photos}
+        />
+      </Suspense>
     </div>
   );
 }

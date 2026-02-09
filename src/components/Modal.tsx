@@ -5,9 +5,10 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  className?: string;
 }
 
-export default function Modal({ isOpen, onClose, children }: ModalProps) {
+export default function Modal({ isOpen, onClose, children, className }: ModalProps) {
   // Close modal when escape key is pressed
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -51,7 +52,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
             exit={{ opacity: 0 }}
           >
             <motion.div 
-              className="bg-white rounded-lg w-full max-w-md mx-auto"
+              className={`bg-white rounded-lg w-full mx-auto ${className || 'max-w-md'}`}
               initial={{ y: 20, scale: 0.95 }}
               animate={{ y: 0, scale: 1 }}
               exit={{ y: 20, scale: 0.95 }}

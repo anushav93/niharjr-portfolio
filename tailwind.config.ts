@@ -10,8 +10,10 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
+        serif: ['var(--font-playfair)', 'serif'],
         // Global sans stack — required:
         sans: [
+          'var(--font-inter)',
           'Inter var',
           'ui-sans-serif',
           'system-ui',
@@ -27,6 +29,167 @@ const config: Config = {
           '"Segoe UI Symbol"',
           '"Noto Color Emoji"',
         ],
+      },
+      // ========================================================================
+      // SEMANTIC COLOR SYSTEM
+      // All colors reference CSS variables from theme.css for easy customization
+      // ========================================================================
+      colors: {
+        // Primary palette - main brand color
+        primary: {
+          50: 'var(--color-primary-50)',
+          100: 'var(--color-primary-100)',
+          200: 'var(--color-primary-200)',
+          300: 'var(--color-primary-300)',
+          400: 'var(--color-primary-400)',
+          500: 'var(--color-primary-500)',
+          600: 'var(--color-primary-600)',
+          700: 'var(--color-primary-700)',
+          800: 'var(--color-primary-800)',
+          900: 'var(--color-primary-900)',
+          950: 'var(--color-primary-950)',
+          DEFAULT: 'var(--color-primary-500)',
+        },
+        // Secondary palette - accent/complementary color
+        secondary: {
+          50: 'var(--color-secondary-50)',
+          100: 'var(--color-secondary-100)',
+          200: 'var(--color-secondary-200)',
+          300: 'var(--color-secondary-300)',
+          400: 'var(--color-secondary-400)',
+          500: 'var(--color-secondary-500)',
+          600: 'var(--color-secondary-600)',
+          700: 'var(--color-secondary-700)',
+          800: 'var(--color-secondary-800)',
+          900: 'var(--color-secondary-900)',
+          950: 'var(--color-secondary-950)',
+          DEFAULT: 'var(--color-secondary-500)',
+        },
+        // Accent palette - highlights and special elements
+        accent: {
+          50: 'var(--color-accent-50)',
+          100: 'var(--color-accent-100)',
+          200: 'var(--color-accent-200)',
+          300: 'var(--color-accent-300)',
+          400: 'var(--color-accent-400)',
+          500: 'var(--color-accent-500)',
+          600: 'var(--color-accent-600)',
+          700: 'var(--color-accent-700)',
+          800: 'var(--color-accent-800)',
+          900: 'var(--color-accent-900)',
+          950: 'var(--color-accent-950)',
+          DEFAULT: 'var(--color-accent-500)',
+        },
+        // Neutral palette - warm sepia tones (mapped to primary)
+        neutral: {
+          50: 'var(--color-neutral-50)',
+          100: 'var(--color-neutral-100)',
+          200: 'var(--color-neutral-200)',
+          300: 'var(--color-neutral-300)',
+          400: 'var(--color-neutral-400)',
+          500: 'var(--color-neutral-500)',
+          600: 'var(--color-neutral-600)',
+          700: 'var(--color-neutral-700)',
+          800: 'var(--color-neutral-800)',
+          900: 'var(--color-neutral-900)',
+          950: 'var(--color-neutral-950)',
+          DEFAULT: 'var(--color-neutral-500)',
+        },
+        // Success palette - positive states
+        success: {
+          50: 'var(--color-success-50)',
+          100: 'var(--color-success-100)',
+          200: 'var(--color-success-200)',
+          300: 'var(--color-success-300)',
+          400: 'var(--color-success-400)',
+          500: 'var(--color-success-500)',
+          600: 'var(--color-success-600)',
+          700: 'var(--color-success-700)',
+          800: 'var(--color-success-800)',
+          900: 'var(--color-success-900)',
+          950: 'var(--color-success-950)',
+          DEFAULT: 'var(--color-success-500)',
+          light: 'var(--color-success-100)',
+          dark: 'var(--color-success-700)',
+        },
+        // Error palette - negative states
+        error: {
+          50: 'var(--color-error-50)',
+          100: 'var(--color-error-100)',
+          200: 'var(--color-error-200)',
+          300: 'var(--color-error-300)',
+          400: 'var(--color-error-400)',
+          500: 'var(--color-error-500)',
+          600: 'var(--color-error-600)',
+          700: 'var(--color-error-700)',
+          800: 'var(--color-error-800)',
+          900: 'var(--color-error-900)',
+          950: 'var(--color-error-950)',
+          DEFAULT: 'var(--color-error-500)',
+          light: 'var(--color-error-100)',
+          dark: 'var(--color-error-700)',
+        },
+        // Warning palette - caution states
+        warning: {
+          50: 'var(--color-warning-50)',
+          100: 'var(--color-warning-100)',
+          200: 'var(--color-warning-200)',
+          300: 'var(--color-warning-300)',
+          400: 'var(--color-warning-400)',
+          500: 'var(--color-warning-500)',
+          600: 'var(--color-warning-600)',
+          700: 'var(--color-warning-700)',
+          800: 'var(--color-warning-800)',
+          900: 'var(--color-warning-900)',
+          950: 'var(--color-warning-950)',
+          DEFAULT: 'var(--color-warning-500)',
+          light: 'var(--color-warning-100)',
+          dark: 'var(--color-warning-700)',
+        },
+        // Info palette - informational states
+        info: {
+          50: 'var(--color-info-50)',
+          100: 'var(--color-info-100)',
+          200: 'var(--color-info-200)',
+          300: 'var(--color-info-300)',
+          400: 'var(--color-info-400)',
+          500: 'var(--color-info-500)',
+          600: 'var(--color-info-600)',
+          700: 'var(--color-info-700)',
+          800: 'var(--color-info-800)',
+          900: 'var(--color-info-900)',
+          950: 'var(--color-info-950)',
+          DEFAULT: 'var(--color-info-500)',
+          light: 'var(--color-info-100)',
+          dark: 'var(--color-info-700)',
+        },
+        // Route-specific colors for navigation
+        route: {
+          home: 'var(--color-route-home)',
+          gallery: 'var(--color-route-gallery)',
+          about: 'var(--color-route-about)',
+          contact: 'var(--color-route-contact)',
+        },
+      },
+      // Semantic text colors
+      textColor: {
+        primary: 'var(--color-text-primary)',
+        secondary: 'var(--color-text-secondary)',
+        muted: 'var(--color-text-muted)',
+        inverted: 'var(--color-text-inverted)',
+      },
+      // Semantic background colors
+      backgroundColor: {
+        primary: 'var(--color-bg-primary)',
+        secondary: 'var(--color-bg-secondary)',
+        tertiary: 'var(--color-bg-tertiary)',
+        inverted: 'var(--color-bg-inverted)',
+      },
+      // Semantic border colors
+      borderColor: {
+        default: 'var(--color-border-default)',
+        strong: 'var(--color-border-strong)',
+        focus: 'var(--color-border-focus)',
       },
       // keep/merge any existing tokens (colors, radii, shadows) you already have
       backgroundImage: {

@@ -28,7 +28,7 @@ const Button: React.FC<ButtonProps> = ({
 
   const variantClasses = {
     dark: "bg-neutral-900 text-white hover:bg-neutral-800",
-    light: "bg-transparent text-neutral-900 hover:bg-neutral-100",
+    light: "bg-transparent text-text-primary hover:bg-bg-secondary",
   };
 
   const mergedClasses = cn(

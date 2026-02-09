@@ -1,6 +1,9 @@
-/* OPTIONAL: if Inter var isn’t already bundled, this pulls the variable font.
+/* OPTIONAL: if Inter var isn't already bundled, this pulls the variable font.
    If you already have it locally, keep that and remove the line below. */
 @import url('https://rsms.me/inter/inter.css');
+
+/* Design Token System - All color variables */
+@import '../styles/theme.css';
 
 :root {
   /* Use Inter var everywhere */
@@ -38,5 +41,3 @@ html { font-family: var(--font-sans); }
   25%, 45% { opacity: 0; transform: scale(1.1) }
   50%, 100% { opacity: 0; transform: scale(1.1) }
 }
-
-

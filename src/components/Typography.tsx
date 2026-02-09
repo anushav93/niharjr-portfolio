@@ -91,13 +91,13 @@ const Typography: React.FC<TypographyProps> = ({
   // Apply color
   switch (color) {
     case "dark":
-      defaultClasses += " text-neutral-900";
+      defaultClasses += " text-text-primary";
       break;
     case "medium":
-      defaultClasses += " text-neutral-600";
+      defaultClasses += " text-text-secondary";
       break;
     case "light":
-      defaultClasses += " text-neutral-50";
+      defaultClasses += " text-text-inverted";
       break;
     default:
       break;

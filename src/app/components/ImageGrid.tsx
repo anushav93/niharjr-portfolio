@@ -2,6 +2,7 @@ import React from "react";
 
 type Photo = {
   id?: string;
+  title?: string | null;
   alt_description?: string | null;
   description?: string | null;
   urls: { small?: string; regular?: string; full?: string };
@@ -37,61 +38,56 @@ type ImageGridProps = {
 const ImageGrid = React.memo(function ImageGrid({ photos, onSelect }: ImageGridProps) {
   if (photos.length === 0) {
     return (
-      <div className="text-center py-20 ">
-        <div className="text-6xl mb-4">📸</div>
-        <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
-          No photos found
-        </h3>
-        <p className="text-neutral-600 dark:text-neutral-300">
-          Try selecting a different category filter.
-        </p>
+      <div className="text-center py-20 px-6">
+        <p className="text-xs tracking-wider uppercase text-text-muted mb-2">No photos found</p>
+        <p className="text-sm text-text-secondary">Try selecting a different category</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2  ">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 px-4 md:px-8 max-w-[1600px] mx-auto">
       {photos.map((photo, index) => (
         <div
           key={`${photo.id}-${index}`}
-          className="group cursor-pointer"
+          className="group cursor-pointer relative"
           onClick={() => onSelect?.(index)}
         >
-          <div className="relative overflow-hidden bg-neutral-100 dark:bg-neutral-800 aspect-[4/5]">
+          <div className="relative overflow-hidden bg-neutral-100 aspect-[3/4]">
             <img
               src={photo.urls.regular || photo.urls.small || photo.urls.full || ""}
               srcSet={generateSrcSet(photo)}
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
-              alt={photo.alt_description || photo.description || "Photo"}
-              className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+              alt={photo.title || "Photography"}
+              className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-75"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <p className="text-sm font-medium line-clamp-2">
-                {photo.alt_description || photo.description || "Untitled"}
-              </p>
-              {photo.user?.name && (
-                <p className="text-xs text-white/70 mt-1">
-                  by {photo.user.name}
+            
+            {/* Hover overlay with description */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute bottom-0 left-0 right-0 p-4">
+                <p className="text-white text-sm font-light tracking-wide line-clamp-2">
+                  {photo.title || ""}
                 </p>
-              )}
-            </div>
-            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="bg-white/20 backdrop-blur-sm p-2">
-                <svg
-                  className="w-4 h-4 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
-                  />
-                </svg>
+                {photo.user?.name && (
+                  <p className="text-white/70 text-xs mt-1 font-light">
+                    {photo.user.name}
+                  </p>
+                )}
+              </div>
+              
+              {/* Click indicator */}
+              <div className="absolute top-4 right-4">
+                <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <svg 
+                    className="w-4 h-4 text-white" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>

@@ -1,12 +1,41 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
-import Typography from "./Typography";
-import Button from "./Button";
-import { getSiteSettings } from "@/lib/sanity";
+import Link from "next/link";
+import Image from "next/image";
+import { getSiteSettings } from "@/lib/contentful";
+import type { SiteSettings } from "@/types/contentful";
+import dynamic from "next/dynamic";
+
+const PDFModal = dynamic(() => import("./PDFModal"), {
+  ssr: false,
+});
+
+const certificates = [
+  {
+    title: "Digital Cinematography",
+    file: "/certificates/digital-cinematography.pdf",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+      </svg>
+    )
+  },
+  {
+    title: "Wedding Photography",
+    file: "/certificates/wedding-photography-certificate.pdf",
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    )
+  }
+];
 
 const Footer: React.FC = () => {
-  const [siteData, setSiteData] = useState<any>(null);
+  const [siteData, setSiteData] = useState<SiteSettings | null>(null);
+  const [selectedPdf, setSelectedPdf] = useState<{ url: string; title: string } | null>(null);
 
   useEffect(() => {
     const fetchSiteData = async () => {
@@ -22,139 +51,177 @@ const Footer: React.FC = () => {
   }, []);
 
   return (
-    <footer className="w-full border-t border-neutral-900 text-neutral-900 px-3 py-20">
-      <div className="container mx-auto ">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-y-12">
-          {/* About Section */}
-          <div>
-            <img
-              src="/logo.svg"
-              alt="Nihar J Reddy"
-              className="h-12 lg:h-20 w-auto"
-            />
-            <Typography variant="p" className="text-neutral-500">
-              Visual storyteller capturing authentic moments and creating
-              compelling narratives through the lens.
-            </Typography>
-          </div>
-
-          {/* Navigation and Socials */}
-          <div>
-            <Typography variant="h4" className="mb-4">
-              Explore
-            </Typography>
-            <ul className="space-y-2">
-              <li>
-                <a href="/" className="hover:text-blue-500 transition-colors">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/gallery"
-                  className="hover:text-blue-500 transition-colors"
-                >
-                  Gallery
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/about"
-                  className="hover:text-blue-500 transition-colors"
-                >
-                  About
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Get in Touch */}
-          <div>
-            <Typography variant="h4" className="mb-4">
-              Let&apos;s Connect
-            </Typography>
-            <Typography variant="p" className="text-neutral-400 mb-4">
-              Have a project in mind or just want to say hello?
-            </Typography>
-            <Button href="/contact" variant="light">
-              Get in Touch
-            </Button>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="mt-20 border-t border-neutral-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-neutral-500">
-          <p className="font-mono text-neutral-400">
-            {siteData?.footer?.copyrightText || `&copy; ${new Date().getFullYear()} Nihar J Reddy. All Rights Reserved.`}
-          </p>
+    <footer className="w-full  bg-stone-200">
+      {/* Accent line */}
+      <div className="w-full h-1 " />
+      
+      <div className="px-6 md:px-12 py-16 ">
+        <div className="mx-auto">
           
-          {/* Social Media Links from CMS */}
-          {siteData?.socialMedia && (
-            <div className="flex space-x-4 mt-4 md:mt-0">
-              {siteData.socialMedia.instagram && (
-                <a 
-                  href={siteData.socialMedia.instagram} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-blue-500 transition-colors"
+          {/* Certificates Section - Highlighted */}
+          <div className="mb-16 border border-stone-300 p-8 bg-stone-300">
+            <div className="text-center mb-6">
+              <h3 className="text-xs tracking-[0.3em] uppercase text-primary-600 font-medium mb-2">
+                Certified Professional
+              </h3>
+              <div className="h-px w-24 bg-primary-400 mx-auto mb-4" />
+              <p className="text-sm text-text-secondary">
+                Recognized qualifications in cinematography and photography
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+              {certificates.map((cert) => (
+                <button
+                  key={cert.title}
+                  onClick={() => setSelectedPdf({ url: cert.file, title: cert.title })}
+                  className="group relative flex items-center gap-4 p-4 border border-stone-500 hover:border-primary-400 bg-bg-primary transition-all text-left w-full"
                 >
-                  Instagram
-                </a>
-              )}
-              {siteData.socialMedia.twitter && (
-                <a 
-                  href={siteData.socialMedia.twitter} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-blue-500 transition-colors"
+                  {/* Corner frames */}
+                  <div className="absolute top-0 left-0 w-6 h-6 border-l-2 border-t-2 border-primary-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute bottom-0 right-0 w-6 h-6 border-r-2 border-b-2 border-primary-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  
+                  <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary-100 text-primary-600 group-hover:bg-primary-200 transition-colors">
+                    {cert.icon}
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-text-primary group-hover:text-primary-600 transition-colors truncate">
+                      {cert.title}
+                    </p>
+                    <p className="text-xs text-text-muted">
+                      View Certificate
+                    </p>
+                  </div>
+                  
+                  <svg 
+                    className="w-4 h-4 text-primary-500 flex-shrink-0 transition-transform group-hover:translate-x-1" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Main Footer Content */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            {/* Logo & Description */}
+            <div className="md:col-span-2">
+              <Image
+                src="/logo.png"
+                alt="NEGA+IVE"
+                width={120}
+                height={40}
+                className="h-10 w-auto mb-6"
+              />
+              <p className="text-sm text-text-secondary leading-relaxed max-w-md">
+                Visual storytelling through photography. Capturing authentic moments
+                and creating compelling narratives through the lens.
+              </p>
+            </div>
+
+            {/* Navigation */}
+            <div>
+              <h4 className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-4 font-medium">
+                Navigate
+              </h4>
+              <ul className="space-y-3">
+                {[
+                  { name: "Home", href: "/" },
+                  { name: "Gallery", href: "/gallery" },
+                  { name: "About", href: "/about" },
+                  { name: "Contact", href: "/contact" },
+                ].map((link) => (
+                  <li key={link.name}>
+                    <Link
+                      href={link.href}
+                      className="group inline-flex items-center gap-2 text-sm text-text-secondary hover:text-primary-600 transition-colors"
+                    >
+                      <span className="w-0 h-px bg-primary-500 group-hover:w-4 transition-all" />
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact & Social */}
+            <div>
+              <h4 className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-4 font-medium">
+                Connect
+              </h4>
+              <Link
+                href="/contact"
+                className="group inline-flex items-center gap-2 text-sm text-primary-600 hover:text-primary-700 transition-colors mb-6 font-medium"
+              >
+                Get in Touch
+                <svg 
+                  className="w-3 h-3 transition-transform group-hover:translate-x-1" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
                 >
-                  Twitter
-                </a>
-              )}
-              {siteData.socialMedia.linkedin && (
-                <a 
-                  href={siteData.socialMedia.linkedin} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-blue-500 transition-colors"
-                >
-                  LinkedIn
-                </a>
-              )}
-              {siteData.socialMedia.facebook && (
-                <a 
-                  href={siteData.socialMedia.facebook} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-blue-500 transition-colors"
-                >
-                  Facebook
-                </a>
-              )}
-              {siteData.socialMedia.behance && (
-                <a 
-                  href={siteData.socialMedia.behance} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-blue-500 transition-colors"
-                >
-                  Behance
-                </a>
-              )}
-              {siteData.socialMedia.youtube && (
-                <a 
-                  href={siteData.socialMedia.youtube} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="hover:text-blue-500 transition-colors"
-                >
-                  YouTube
-                </a>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+
+              {/* Social Links */}
+              {siteData?.socialMedia && (
+                <div className="flex flex-col gap-3">
+                  {siteData.socialMedia.instagram && (
+                    <a 
+                      href={siteData.socialMedia.instagram} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-2 text-xs text-text-secondary hover:text-primary-600 transition-colors"
+                    >
+                      <span className="w-0 h-px bg-primary-500 group-hover:w-4 transition-all" />
+                      Instagram
+                    </a>
+                  )}
+                  {siteData.socialMedia.twitter && (
+                    <a 
+                      href={siteData.socialMedia.twitter} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-2 text-xs text-text-secondary hover:text-primary-600 transition-colors"
+                    >
+                      <span className="w-0 h-px bg-primary-500 group-hover:w-4 transition-all" />
+                      Twitter
+                    </a>
+                  )}
+                </div>
               )}
             </div>
-          )}
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="border-t border-border-default pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-xs text-text-muted">
+              {siteData?.footer?.copyrightText || `© ${new Date().getFullYear()} All Rights Reserved`}
+            </p>
+            
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-px bg-primary-400" />
+              <p className="text-xs tracking-[0.3em] uppercase text-primary-600 font-medium">
+                NEGA+IVE
+              </p>
+              <div className="w-8 h-px bg-primary-400" />
+            </div>
+          </div>
         </div>
       </div>
+
+      <PDFModal 
+        isOpen={!!selectedPdf} 
+        onClose={() => setSelectedPdf(null)} 
+        pdfUrl={selectedPdf?.url || ""} 
+        title={selectedPdf?.title} 
+      />
     </footer>
   );
 };

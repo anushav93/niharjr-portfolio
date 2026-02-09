@@ -8,7 +8,7 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className={"flex flex-col min-h-screen font-sans antialiased"}>
+    <div className={"flex flex-col min-h-screen  font-sans antialiased"}>
       <HeadWithMetas
         title="Nihar J Reddy"
         description="Nihar J Reddy - Photographer + civil engineer"
@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Navbar />
       </header>
 
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow bg-stone-200">{children}</main>
 
       <footer className=" py-4 px-6">
         {/* Your footer content goes here */}

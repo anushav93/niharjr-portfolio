@@ -1,87 +1,101 @@
 import React from "react";
-import Typography from "@/components/Typography";
-import Container from "@/components/Container";
 import ContactForm from "@/components/ContactForm";
-import { getSiteSettings } from "@/lib/sanity";
+import { getSiteSettings } from "@/lib/contentful";
 
-// Force revalidation on every request
-export const revalidate = 0;
+// Revalidate every 60 seconds for ISR
+export const revalidate = 60;
 
 const ContactPage: React.FC = async () => {
-  // Fetch site settings from Sanity CMS
+  // Fetch site settings from Contentful CMS
   const siteData = await getSiteSettings();
 
   return (
-    <div className="pt-12">
-      <Container>
-        <div className="text-center py-20">
-          <Typography
-            variant="small"
-            className="mb-6 uppercase px-2 py-1 bg-blue-500 text-white rounded-full"
-          >
-            Contact Me
-          </Typography>
-          <Typography variant="h1" fontWeight="light" className="mt-8">
-            Get in Touch
-          </Typography>
-          <Typography variant="p" className="max-w-2xl mx-auto mt-4">
-            {siteData?.contactInfo?.availability?.availabilityMessage || 
-              "I'm always excited to connect with new people. Whether you have a question, a project proposal, or just want to say hello, feel free to reach out."}
-          </Typography>
-
-          {/* <div className="mt-6 px-4 py-2 w-fit bg-green-500 animate-pulse text-white rounded-full mx-auto">
-            <Typography variant="small" className="mb-2 text-white">
-              Available for new projects
-            </Typography> 
-          </div> */}
-        </div>
+    <div className="min-h-screen bg-stone-200">
+      {/* Contact Header with accent */}
+      <div className="relative">
+        <div className="absolute top-20 left-0 w-24 h-1 bg-primary-500" />
         
-        {/* Contact Information from CMS */}
-        {/* {siteData?.contactInfo && (
-          <div className="max-w-4xl mx-auto mb-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
-              {siteData.contactInfo.email && (
-                <div className="p-6 border border-neutral-200 rounded-lg">
-                  <Typography variant="h4" className="mb-2">Email</Typography>
-                  <Typography variant="p" className="text-blue-600">
-                    <a href={`mailto:${siteData.contactInfo.email}`}>
-                      {siteData.contactInfo.email}
-                    </a>
-                  </Typography>
-                </div>
-              )}
-              {siteData.contactInfo.phone && (
-                <div className="p-6 border border-neutral-200 rounded-lg">
-                  <Typography variant="h4" className="mb-2">Phone</Typography>
-                  <Typography variant="p" className="text-blue-600">
-                    <a href={`tel:${siteData.contactInfo.phone}`}>
-                      {siteData.contactInfo.phone}
-                    </a>
-                  </Typography>
-                </div>
-              )}
-              {siteData.contactInfo.location && (
-                <div className="p-6 border border-neutral-200 rounded-lg">
-                  <Typography variant="h4" className="mb-2">Location</Typography>
-                  <Typography variant="p">{siteData.contactInfo.location}</Typography>
-                </div>
-              )}
-              {siteData.contactInfo.availability && (
-                <div className="p-6 border border-neutral-200 rounded-lg">
-                  <Typography variant="h4" className="mb-2">Availability</Typography>
-                  <Typography variant="p" className={siteData.contactInfo.availability.isAvailable ? "text-green-600" : "text-red-600"}>
-                    {siteData.contactInfo.availability.isAvailable ? "Available for new projects" : "Currently booked"}
-                  </Typography>
-                </div>
-              )}
-            </div>
+        <div className="pt-32 pb-16 px-6 text-center max-w-4xl mx-auto">
+          <div className="inline-block mb-4">
+            <p className="text-xs tracking-[0.3em] uppercase text-primary-600 mb-2 font-medium">
+              Contact
+            </p>
+            <div className="h-px w-full bg-primary-400" />
           </div>
-        )} */}
-        
-        <div className="max-w-2xl mx-auto pb-20">
-          <ContactForm />
+          
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-text-primary mb-6 leading-tight">
+            Get in Touch
+          </h1>
+          
+          <p className="text-base text-text-secondary max-w-2xl mx-auto leading-relaxed">
+            {siteData?.contactInfo?.availability?.availabilityMessage || 
+              "Available for commissions and collaborations. Let's create something together."}
+          </p>
         </div>
-      </Container>
+      </div>
+
+      {/* Contact Information with cards */}
+      {siteData?.contactInfo && (
+        <div className="max-w-4xl mx-auto px-6 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {siteData.contactInfo.email && (
+              <div className="group relative p-6 border border-stone-300 transition-all bg-bg-secondary/50">
+                <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="text-center">
+                  <p className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-3 font-medium">
+                    Email
+                  </p>
+                  <a 
+                    href={`mailto:${siteData.contactInfo.email}`}
+                    className="text-sm text-text-primary hover:text-primary-600 transition-colors break-all"
+                  >
+                    {siteData.contactInfo.email}
+                  </a>
+                </div>
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+            )}
+            
+            {siteData.contactInfo.phone && (
+              <div className="group relative p-6 border border-stone-300 transition-all bg-bg-secondary/50">
+                <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="text-center">
+                  <p className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-3 font-medium">
+                    Phone
+                  </p>
+                  <a 
+                    href={`tel:${siteData.contactInfo.phone}`}
+                    className="text-sm text-text-primary hover:text-primary-600 transition-colors"
+                  >
+                    {siteData.contactInfo.phone}
+                  </a>
+                </div>
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+            )}
+            
+            {siteData.contactInfo.location && (
+              <div className="group relative p-6 border border-stone-300 transition-all bg-bg-secondary/50">
+                <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="text-center">
+                  <p className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-3 font-medium">
+                    Location
+                  </p>
+                  <p className="text-sm text-text-secondary">
+                    {siteData.contactInfo.location}
+                  </p>
+                </div>
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Contact Form */}
+      <div className="max-w-2xl mx-auto px-6 pb-20">
+        <ContactForm />
+      </div>
     </div>
   );
 };

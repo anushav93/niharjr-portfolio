@@ -1,23 +1,17 @@
 import { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
-import { client } from "@/lib/sanity"
 
-// Function to check if user is a Sanity project member
-async function validateSanityMembership(email: string): Promise<boolean> {
-  try {
-    // List of authorized emails - you can expand this or use Sanity's project members API
-    const authorizedEmails = [
-      process.env.ADMIN_EMAIL || "nihar@niharjreddy.com",
-      "vuday23@gmail.com",
-      "niharjreddy@gmail.com",
-      "anushaventrapragada93@gmail.com"
-    ]
-    
-    return authorizedEmails.includes(email.toLowerCase())
-  } catch (error) {
-    console.error("Error validating Sanity membership:", error)
-    return false
-  }
+// Authorized admin emails
+const AUTHORIZED_EMAILS = [
+  process.env.ADMIN_EMAIL || "nihar@niharjreddy.com",
+  "vuday23@gmail.com",
+  "niharjreddy@gmail.com",
+  "anushaventrapragada93@gmail.com"
+]
+
+// Function to check if user is authorized
+function validateAdminAccess(email: string): boolean {
+  return AUTHORIZED_EMAILS.includes(email.toLowerCase())
 }
 
 export const authOptions: NextAuthOptions = {
@@ -35,10 +29,10 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       if (account?.provider === "google" && user?.email) {
         // Validate if user is authorized to access the CMS
-        const isAuthorized = await validateSanityMembership(user.email)
+        const isAuthorized = validateAdminAccess(user.email)
         
         if (!isAuthorized) {
           console.log(`Unauthorized access attempt by: ${user.email}`)
@@ -49,7 +43,7 @@ export const authOptions: NextAuthOptions = {
       }
       return false
     },
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       if (user) {
         token.role = "admin" // All authorized users get admin role
       }

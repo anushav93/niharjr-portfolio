@@ -14,11 +14,11 @@ export default function SectionHeading({
   return (
     <div className={`space-y-2 ${className ?? ""}`}>
       {eyebrow ? (
-        <div className="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+        <div className="text-xs uppercase tracking-wide text-text-muted">
           {eyebrow}
         </div>
       ) : null}
-      <h2 className="text-2xl md:text-3xl font-medium text-neutral-900 dark:text-neutral-100">
+      <h2 className="text-2xl md:text-3xl font-medium text-text-primary">
         {title}
       </h2>
     </div>

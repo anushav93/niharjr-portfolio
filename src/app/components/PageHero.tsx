@@ -1,7 +1,7 @@
 import React from "react";
-import AnimatedImageStack from "./AnimatedImageStack"; // Make sure the path is correct
-import Button from "@/components/Button"; // Assuming a Button component exists
-import Typography from "@/components/Typography"; // Assuming a Typography component exists
+import AnimatedImageStack from "./AnimatedImageStack";
+import Button from "@/components/Button";
+import Typography from "@/components/Typography";
 
 type HeroPhoto = {
   src: string;
@@ -19,14 +19,14 @@ export default function PageHero({ photos, tagline, title, description }: PageHe
 
   return (
     <div className="">
-      <section className="w-full flex items-center  py-12">
-        <div className="w-full ">
+      <section className="w-full flex items-center py-12">
+        <div className="w-full">
           <div className="grid grid-cols-1 items-center">
             <div className="">
               <div className="text-center">
                 <Typography
                   variant="small"
-                  className="mb-6 uppercase px-2 py-1 bg-orange-500  text-white rounded-full"
+                  className="mb-6 uppercase px-2 py-1 bg-secondary-500 text-white rounded-full"
                 >
                   {tagline || 'VISUAL STORYTELLER'}
                 </Typography>
@@ -38,7 +38,7 @@ export default function PageHero({ photos, tagline, title, description }: PageHe
                 </Typography>
                 <Typography
                   variant="p"
-                  className="mx-auto md:mx-0 text-lg sm:text-xl text-neutral-600 dark:text-neutral-400 mb-8"
+                  className="mx-auto md:mx-0 text-lg sm:text-xl text-text-secondary mb-8"
                 >
                   {description || 'Capturing authentic moments and creating compelling narratives through the lens'}
                 </Typography>
@@ -54,7 +54,7 @@ export default function PageHero({ photos, tagline, title, description }: PageHe
           </div>
         </div>
       </section>
-      <div className="flex flex-row justify-center md:justify-start ">
+      <div className="flex flex-row justify-center md:justify-start">
         <Button
           href="/gallery"
           variant="light"

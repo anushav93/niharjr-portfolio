@@ -1,194 +1,178 @@
-import Button from "@/components/Button";
-import Typography from "@/components/Typography";
-import { getAboutPage, urlFor } from "@/lib/sanity";
+import { getAboutPage, getImageUrl } from "@/lib/contentful";
+import CornerFrameButton from "@/components/CornerFrameButton";
 
-// Force revalidation on every request
-export const revalidate = 0;
+// Revalidate every 60 seconds for ISR
+export const revalidate = 60;
 
 export default async function AboutPage() {
-  // Fetch about page content from Sanity CMS
+  // Fetch about page content from Contentful CMS
   const aboutData = await getAboutPage();
+  
+  // Get portrait image URL
+  const portraitImageUrl = aboutData?.story?.portraitImage
+    ? getImageUrl(aboutData.story.portraitImage, { width: 800, height: 1000, format: 'webp', quality: 85 })
+    : '/images/about.jpg';
+
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 border-b border-neutral-900 ">
-        <div className="w-full px-6 lg:px-8">
-          <div className="text-center">
-            <Typography
-              variant="small"
-              className="mb-6 uppercase px-2 py-1 bg-amber-500 text-white rounded-full"
-            >
+    <div className="min-h-screen bg-stone-200">
+      {/* About Header with accent */}
+      <div className="relative">
+        <div className="absolute top-20 left-0 w-24 h-1 bg-primary-500" />
+        
+        <div className="pt-32 pb-16 px-6 text-center max-w-4xl mx-auto">
+          <div className="inline-block mb-4">
+            <p className="text-xs tracking-[0.3em] uppercase text-primary-600 mb-2 font-medium">
               About
-            </Typography>
-            <Typography variant="h1" fontWeight="light" className="mb-4 mt-8">
-              {aboutData?.hero?.title || 'Nihar J Reddy'}
-            </Typography>
-            <Typography variant="p" className="max-w-3xl mx-auto">
-              {aboutData?.hero?.subtitle || 'Visual storyteller, photographer, and creative director'}
-            </Typography>
+            </p>
+            <div className="h-px w-full bg-primary-400" />
           </div>
+          
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-text-primary mb-6 leading-tight">
+            {aboutData?.hero?.title || 'Nihar J Reddy'}
+          </h1>
+          
+          <p className="text-base text-text-secondary max-w-2xl mx-auto leading-relaxed">
+            {aboutData?.hero?.subtitle || 'Visual storyteller based in Australia'}
+          </p>
         </div>
-      </section>
+      </div>
 
       {/* Main Content */}
-      <section className="py-20 border-b border-neutral-900">
-        <div className="w-full px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center max-w-6xl mx-auto">
-            {/* Portrait */}
-            <div className="order-2 lg:order-1">
-              <div className="relative">
-                <div className="aspect-[3/4] overflow-hidden bg-neutral-100 dark:bg-neutral-800">
-                  {aboutData?.story?.portraitImage ? (
-                    <img
-                      src={urlFor(aboutData.story.portraitImage).width(800).height(1000).url()}
-                      alt="Nihar J Reddy"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <img
-                      src="/images/about.jpg"
-                      alt="Nihar J Reddy"
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <div className="absolute -bottom-6 -right-6 bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white">
-                <div className="text-sm opacity-90">Since</div>
-                  <div className="text-2xl font-bold">{aboutData?.story?.yearsExperience || 2011}</div>
-                </div>
-              </div>
+      <section className="py-12 px-6 md:px-12">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+          {/* Portrait with accent border */}
+          <div className="relative">
+            <div className="absolute -top-4 -left-4 w-32 h-32 border-t-2 border-l-2 border-primary-400" />
+            <div className="aspect-[3/4] overflow-hidden bg-neutral-100 relative z-10">
+              <img
+                src={portraitImageUrl}
+                alt="Photographer"
+                className="w-full h-full object-cover"
+              />
             </div>
+            <div className="absolute -bottom-4 -right-4 w-32 h-32 border-b-2 border-r-2 border-primary-400" />
+          </div>
 
-            {/* Story */}
-            <div className="order-1 lg:order-2 space-y-8">
-              <div>
-                <Typography variant="h2" fontWeight="light" className="mb-6">
+          {/* Story */}
+          <div className="space-y-8 flex flex-col justify-center">
+            <div>
+              <div className="flex items-center gap-4 mb-6">
+                <h2 className="font-serif text-3xl md:text-4xl text-text-primary">
                   {aboutData?.story?.mainTitle || 'Creating Visual Narratives'}
-                </Typography>
-                <div className="space-y-6">
-                  {aboutData?.story?.storyParagraphs?.map((paragraph, index) => (
-                    <Typography key={index} variant="p">
-                      {paragraph}
-                    </Typography>
-                  )) || (
-                    <>
-                      <Typography variant="p">
-                        I'm a professional photographer with a passion for capturing
-                        the extraordinary in the ordinary. My work spans across
-                        nature, portraits, and event photography, with each image
-                        telling a unique story.
-                      </Typography>
-                      <Typography variant="p">
-                        Skilled in capturing natural light, authentic emotions, and
-                        candid moments, I create beautiful, meaningful photographs
-                        that preserve the essence of special occasions and everyday
-                        beauty.
-                      </Typography>
-                      <Typography variant="p">
-                        When I'm not behind the camera, I'm exploring new
-                        techniques, studying the work of masters, and constantly
-                        pushing the boundaries of visual storytelling.
-                      </Typography>
-                    </>
-                  )}
-                </div>
+                </h2>
               </div>
-
-              <div className="flex flex-wrap gap-3">
-                {aboutData?.story?.skills?.map((skill) => (
-                  <span
-                    key={skill}
-                    className="border border-neutral-900 text-neutral-700 dark:text-neutral-300 px-4 py-2 text-sm font-medium"
-                  >
-                    {skill}
-                  </span>
+              
+              <div className="space-y-6 text-sm leading-relaxed text-text-secondary">
+                {aboutData?.story?.storyParagraphs?.map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
                 )) || (
                   <>
-                    {[
-                      "Photography",
-                      "Visual Storytelling",
-                      "Event Coverage",
-                      "Portrait Sessions",
-                    ].map((skill) => (
-                      <span
-                        key={skill}
-                        className="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-4 py-2 rounded-full text-sm font-medium"
-                      >
-                        {skill}
-                      </span>
-                    ))}
+                    <p>
+                      Professional photographer with a passion for capturing authentic moments
+                      and creating compelling visual narratives that resonate.
+                    </p>
+                    <p>
+                      Specializing in natural light photography, with a focus on composition,
+                      emotion, and storytelling through imagery.
+                    </p>
                   </>
                 )}
               </div>
             </div>
+
+            {/* Skills */}
+            {aboutData?.story?.skills && aboutData.story.skills.length > 0 && (
+              <div className="flex flex-wrap gap-3">
+                {aboutData.story.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-4 py-2 text-xs tracking-wider uppercase bg-primary-50 text-primary-700 border border-stone-300 font-medium transition-all hover:bg-primary-100"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Values Section */}
-      <section className="py-20 border-neutral-900">
-        <div className="w-full ">
-          <div className="text-center mb-16">
-            <Typography variant="h2" fontWeight="light" className="mb-4">
-              {aboutData?.approach?.sectionTitle || 'My Approach'}
-            </Typography>
-            <Typography variant="p" className="max-w-3xl mx-auto">
-              {aboutData?.approach?.sectionDescription || 'Three core principles guide every shot I take and every story I tell through my lens.'}
-            </Typography>
+      {/* Approach Section with visual divider */}
+      <section className="py-20 px-6 md:px-12 mt-12">
+        <div className="max-w-6xl mx-auto">
+          {/* Divider */}
+          <div className="flex items-center gap-4 mb-16">
+            <div className="h-px flex-1 bg-border-default" />
+            <div className="w-2 h-2 bg-primary-500 rounded-full" />
+            <div className="h-px flex-1 bg-border-default" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-b divide-x divide-y md:divide-y-0 divide-neutral-900 border-neutral-900 ">
+          <div className="text-center mb-16">
+            <h2 className="font-serif text-3xl md:text-4xl text-text-primary mb-4">
+              {aboutData?.approach?.sectionTitle || 'Approach'}
+            </h2>
+            <p className="text-sm text-text-secondary max-w-2xl mx-auto">
+              {aboutData?.approach?.sectionDescription || 'Core principles that guide every photograph'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {(aboutData?.approach?.principles || [
               {
-                icon: "🎨",
+                icon: "01",
                 title: "Craft",
-                description: "Meticulous attention to light, color, and composition creates images that stand the test of time.",
+                description: "Meticulous attention to light, composition, and detail",
               },
               {
-                icon: "📐",
-                title: "Composition",
-                description: "Strong geometric principles and visual balance create calm, harmonious imagery that draws the viewer in.",
+                icon: "02",
+                title: "Vision",
+                description: "Strong creative perspective and artistic direction",
               },
               {
-                icon: "📖",
-                title: "Storytelling",
-                description: "Every frame captures human moments and emotions, anchored in place and purpose to tell meaningful stories.",
+                icon: "03",
+                title: "Story",
+                description: "Every frame captures authentic moments and emotions",
               },
             ]).map((item, idx) => (
-              <div
-                key={item.title}
-                className="bg-white dark:bg-neutral-800 p-8 md:p-12 lg:p-16 text-center transition-all duration-300"
-              >
-                <div className="text-4xl mb-4">{item.icon}</div>
-                <Typography variant="h3" fontWeight="light" className="mb-6">
-                  {item.title}
-                </Typography>
-                <Typography variant="p">{item.description}</Typography>
+              <div key={item.title} className="relative group">
+                <div className="absolute top-0 left-0 w-12 h-12 border-l-2 border-t-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="p-6 text-center">
+                  <p className="text-4xl font-light text-primary-400 mb-4">
+                    {item.icon}
+                  </p>
+                  <h3 className="font-serif text-xl text-text-primary mb-3">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-text-secondary">
+                    {item.description}
+                  </p>
+                </div>
+                <div className="absolute bottom-0 right-0 w-12 h-12 border-r-2 border-b-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Full-width CTA Section */}
-      <section className="bg-white dark:bg-neutral-950 border-b border-neutral-900">
-        <div className="py-20 px-6 lg:px-8">
-                  <div className="text-center max-w-3xl mx-auto mb-8">
-          <Typography variant="h2" fontWeight="light" className="mb-6">
-            {aboutData?.callToAction?.title || "Let's Create Something Beautiful"}
-          </Typography>
-          <Typography variant="p">
-            {aboutData?.callToAction?.description || 'Ready to capture your special moments? I\'d love to discuss your vision and bring it to life.'}
-          </Typography>
+      {/* CTA Section with corner frame buttons */}
+      <section className="py-20 px-6 text-center border-t border-border-default mt-12">
+        <div className="max-w-2xl mx-auto mb-12">
+          <h2 className="font-serif text-3xl md:text-4xl text-text-primary mb-4">
+            {aboutData?.callToAction?.title || "Let's Work Together"}
+          </h2>
+          <p className="text-sm text-text-secondary">
+            {aboutData?.callToAction?.description || 'Available for commissions and collaborations'}
+          </p>
         </div>
-        </div>
-        <div className=" flex justify-center pb-32">
-          <Button href="/gallery" variant="light">
-            {aboutData?.callToAction?.primaryButtonText || 'View My Work'}
-          </Button>
-          <Button href="/contact" variant="dark">
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <CornerFrameButton href="/gallery">
+            {aboutData?.callToAction?.primaryButtonText || 'View Work'}
+          </CornerFrameButton>
+          
+          <CornerFrameButton href="/contact">
             {aboutData?.callToAction?.secondaryButtonText || 'Get In Touch'}
-          </Button>
+          </CornerFrameButton>
         </div>
       </section>
     </div>

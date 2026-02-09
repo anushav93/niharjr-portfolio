@@ -64,10 +64,10 @@ export default function GalleryClient({
 
   return (
     <div>
-      <div className="border-t border-neutral-900 mt-20">
+      <div className="border-t border-t-stone-300">
         <FilterBar filters={filters} active={active} onChange={updateFilter} />
       </div>
-      <div className="py-12">
+      <div className="py-8">
         <ImageGrid
           photos={shuffledPhotos}
           onSelect={(i) => setLightboxIndex(i)}

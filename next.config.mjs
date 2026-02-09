@@ -17,6 +17,23 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  // Image optimization configuration
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.ctfassets.net', // Contentful images
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com', // Unsplash images (fallback)
+      },
+      {
+        protocol: 'https',
+        hostname: 'plus.unsplash.com', // Unsplash plus images
+      },
+    ],
+  },
   // Add dependency resolution tolerance
   transpilePackages: ['framer-motion', '@heroicons/react', 'react-masonry-css', 'react-safe'],
   // Enable external directories (for monorepo support)
@@ -25,17 +42,23 @@ const nextConfig = {
       transform: '@heroicons/react/{{member}}',
     },
   },
-      env: {
-        RESEND_API_KEY: process.env.RESEND_API_KEY,
-        NEXT_PUBLIC_SANITY_PROJECT_ID: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-        NEXT_PUBLIC_SANITY_DATASET: process.env.NEXT_PUBLIC_SANITY_DATASET,
-        SANITY_API_TOKEN: process.env.SANITY_API_TOKEN,
-        NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-        NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-        GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-        GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-        ADMIN_EMAIL: process.env.ADMIN_EMAIL,
-    },
+  env: {
+    // Email
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    // Contentful CMS
+    CONTENTFUL_SPACE_ID: process.env.CONTENTFUL_SPACE_ID,
+    CONTENTFUL_ACCESS_TOKEN: process.env.CONTENTFUL_ACCESS_TOKEN,
+    CONTENTFUL_MANAGEMENT_TOKEN: process.env.CONTENTFUL_MANAGEMENT_TOKEN,
+    CONTENTFUL_ENVIRONMENT: process.env.CONTENTFUL_ENVIRONMENT,
+    // Authentication
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+    // Unsplash (for fallback/migration)
+    UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY,
+  },
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // Don't resolve 'fs' module on the client to prevent this error
