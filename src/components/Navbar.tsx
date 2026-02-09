@@ -29,7 +29,7 @@ export default function Navbar() {
           alt="NEGA+IVE"
           width={120}
           height={40}
-          className="h-10 w-auto transition-all duration-300 group-hover:brightness-110"
+          className="h-10 -mt-4 w-auto transition-all duration-300 group-hover:brightness-110"
           priority
         />
         <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300" />
@@ -69,17 +69,17 @@ export default function Navbar() {
         aria-label="Toggle menu"
       >
         <span
-          className={`w-6 h-0.5 bg-primary-600 transition-all duration-300 ${
+          className={`w-6 h-0.5 bg-stone-500 transition-all duration-300 ${
             mobileMenuOpen ? "rotate-45 translate-y-2" : ""
           }`}
         />
         <span
-          className={`w-6 h-0.5 bg-primary-600 transition-all duration-300 ${
+          className={`w-6 h-0.5 bg-stone-500 transition-all duration-300 ${
             mobileMenuOpen ? "opacity-0" : ""
           }`}
         />
         <span
-          className={`w-6 h-0.5 bg-primary-600 transition-all duration-300 ${
+          className={`w-6 h-0.5 bg-stone-500 transition-all duration-300 ${
             mobileMenuOpen ? "-rotate-45 -translate-y-2" : ""
           }`}
         />
