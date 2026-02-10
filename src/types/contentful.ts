@@ -90,6 +90,29 @@ export interface Homepage {
     buttonText: string;
     featuredImages: ContentfulImage[];
   };
+  recentProjects: RecentProject[];
+}
+
+// ============================================================================
+// Recent Project Content Type
+// ============================================================================
+
+export interface RecentProjectFields {
+  /** Project title */
+  title: EntryFields.Text;
+  /** URL slug for the project */
+  url: EntryFields.Text;
+  /** Project assets/images */
+  assets: Asset[];
+}
+
+export type RecentProjectEntry = Entry<RecentProjectFields>;
+
+export interface RecentProject {
+  id: string;
+  title: string;
+  url: string;
+  assets: GalleryPhoto[];
 }
 
 // ============================================================================

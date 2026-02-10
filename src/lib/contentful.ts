@@ -18,6 +18,7 @@ import type {
   CategoryCard,
   Principle,
   QuickLink,
+  RecentProject,
 } from '@/types/contentful';
 
 // ============================================================================
@@ -154,6 +155,29 @@ function transformAssetsToImages(assets: any[]): ContentfulImage[] {
     .filter((img): img is ContentfulImage => img !== null);
 }
 
+function transformAssetsToGalleryPhotos(assets: any[]): GalleryPhoto[] {
+  return (assets || [])
+    .filter((asset: any) => asset?.fields?.file)
+    .map((asset: any) => ({
+      id: asset.sys.id,
+      url: asset.fields?.file?.url ? `https:${asset.fields.file.url}` : '',
+      width: asset.fields?.file?.details?.image?.width || 1920,
+      height: asset.fields?.file?.details?.image?.height || 1080,
+      title: asset.fields?.title || '',
+      alt: asset.fields?.description || asset.fields?.title || '',
+    }));
+}
+
+function transformRecentProject(entry: any): RecentProject {
+  const fields = entry.fields as any;
+  return {
+    id: entry.sys.id,
+    title: fields.title || '',
+    url: fields.url || '',
+    assets: transformAssetsToGalleryPhotos(fields.assets),
+  };
+}
+
 // ============================================================================
 // Content Fetchers
 // ============================================================================
@@ -172,6 +196,7 @@ export async function getHomepage(): Promise<Homepage | null> {
     const entries = await contentfulClient.getEntries({
       content_type: 'homepage',
       limit: 1,
+      include: 3, // Include linked entries (recent projects) and their assets
     });
 
     if (!entries.items.length) {
@@ -180,6 +205,11 @@ export async function getHomepage(): Promise<Homepage | null> {
 
     const entry = entries.items[0];
     const fields = entry.fields as any;
+
+    // Transform recent projects references
+    const recentProjects: RecentProject[] = (fields.recentProjects || [])
+      .filter((project: any) => project?.fields)
+      .map(transformRecentProject);
 
     return {
       hero: {
@@ -199,6 +229,7 @@ export async function getHomepage(): Promise<Homepage | null> {
         buttonText: fields.featuredWorkButtonText || 'View Gallery',
         featuredImages: transformAssetsToImages(fields.featuredImages),
       },
+      recentProjects,
     };
   } catch (error) {
     console.error('Error fetching homepage from Contentful:', error);
@@ -337,7 +368,7 @@ export async function getGalleryCollections(): Promise<GalleryCollection[]> {
       include: 2, // Include linked assets
     });
 
-    return entries.items.map((entry) => {
+    return entries.items.map((entry: any) => {
       const fields = entry.fields as any;
       const photos = (fields.photos || []).map((asset: any): GalleryPhoto => ({
         id: asset.sys.id,
@@ -378,6 +409,60 @@ export async function getPhotosByCollection(slug: string): Promise<GalleryPhoto[
   const collections = await getGalleryCollections();
   const collection = collections.find((c) => c.slug === slug);
   return collection?.photos || [];
+}
+
+// ============================================================================
+// Recent Project Fetchers
+// ============================================================================
+
+/**
+ * Fetch a single recent project by URL slug
+ */
+export async function getRecentProject(url: string): Promise<RecentProject | null> {
+  try {
+    const contentfulClient = getClient();
+    if (!contentfulClient) {
+      return null;
+    }
+
+    const entries = await contentfulClient.getEntries({
+      content_type: 'recentProject',
+      'fields.url': url,
+      limit: 1,
+      include: 2, // Include linked assets
+    });
+
+    if (!entries.items.length) {
+      return null;
+    }
+
+    return transformRecentProject(entries.items[0]);
+  } catch (error) {
+    console.error('Error fetching recent project from Contentful:', error);
+    return null;
+  }
+}
+
+/**
+ * Fetch all recent projects
+ */
+export async function getAllRecentProjects(): Promise<RecentProject[]> {
+  try {
+    const contentfulClient = getClient();
+    if (!contentfulClient) {
+      return [];
+    }
+
+    const entries = await contentfulClient.getEntries({
+      content_type: 'recentProject',
+      include: 2,
+    });
+
+    return entries.items.map(transformRecentProject);
+  } catch (error) {
+    console.error('Error fetching recent projects from Contentful:', error);
+    return [];
+  }
 }
 
 // ============================================================================
