@@ -138,7 +138,7 @@ const ContactForm: React.FC = () => {
             onChange={(e) => setName(e.target.value)}
             disabled={status === "loading"}
             className={cn(
-              "w-full px-4 py-4 bg-stone-200 border border-stone-500 text-text-primary",
+              "w-full px-4 py-4 bg-[#f5e9df] border border-stone-500 text-text-primary",
               "focus:outline-none focus:border-primary-500 focus:bg-bg-primary transition-all",
               "text-sm disabled:opacity-50 disabled:cursor-not-allowed",
               "group-hover:border-primary-300"
@@ -162,7 +162,7 @@ const ContactForm: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
             disabled={status === "loading"}
             className={cn(
-              "w-full px-4 py-4 bg-stone-200 border border-stone-500 text-text-primary",
+              "w-full px-4 py-4 bg-[#f5e9df] border border-stone-500 text-text-primary",
               "focus:outline-none focus:border-primary-500 focus:bg-bg-primary transition-all",
               "text-sm disabled:opacity-50 disabled:cursor-not-allowed",
               "group-hover:border-primary-300"
@@ -186,7 +186,7 @@ const ContactForm: React.FC = () => {
             disabled={status === "loading"}
             rows={6}
             className={cn(
-              "w-full px-4 py-4 bg-stone-200 border border-stone-500 text-text-primary resize-none",
+              "w-full px-4 py-4 bg-[#f5e9df] border border-stone-500 text-text-primary resize-none",
               "focus:outline-none focus:border-primary-500 focus:bg-bg-primary transition-all",
               "text-sm disabled:opacity-50 disabled:cursor-not-allowed",
               "group-hover:border-primary-300"

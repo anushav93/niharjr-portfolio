@@ -14,7 +14,7 @@ export default async function AboutPage() {
     : '/images/about.jpg';
 
   return (
-    <div className="min-h-screen bg-stone-200">
+    <div className="min-h-screen bg-[#f5e9df]">
       {/* About Header with accent */}
       <div className="relative">
         <div className="absolute top-20 left-0 w-24 h-1 bg-primary-500" />
@@ -150,12 +150,12 @@ export default async function AboutPage() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <CornerFrameButton href="/gallery">
-            {aboutData?.callToAction?.primaryButtonText || 'View Work'}
+          <CornerFrameButton href="/contact">
+            {aboutData?.callToAction?.primaryButtonText || 'Get In Touch'}
           </CornerFrameButton>
           
-          <CornerFrameButton href="/contact">
-            {aboutData?.callToAction?.secondaryButtonText || 'Get In Touch'}
+          <CornerFrameButton href="/gallery">
+            {aboutData?.callToAction?.secondaryButtonText || 'View Work'}
           </CornerFrameButton>
         </div>
       </section>

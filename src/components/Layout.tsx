@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Navbar />
       </header>
 
-      <main className="flex-grow bg-stone-200">{children}</main>
+      <main className="flex-grow bg-[#f5e9df]">{children}</main>
 
       <footer className=" py-4 px-6">
         {/* Your footer content goes here */}

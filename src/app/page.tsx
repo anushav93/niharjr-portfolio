@@ -36,7 +36,7 @@ export default async function HomePage() {
   const description = homepageData?.hero?.description || 'Capturing authentic moments through the lens';
 
   return (
-    <div className="min-h-screen bg-stone-200">
+    <div className="min-h-screen bg-[#f5e9df]">
       <HeroSection 
         tagline={tagline}
         title={title}

@@ -21,15 +21,15 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="border-b border-b-stone-300 fixed top-0 left-0 right-0 z-50 w-full px-6 lg:px-8 h-24 flex items-center justify-between bg-stone-200  transition-all duration-300">
+    <nav className="border-b border-b-stone-300 fixed top-0 left-0 right-0 z-50 w-full px-6 lg:px-8 h-24 flex items-center justify-between bg-[#f5e9df]  transition-all duration-300">
       {/* Logo with accent */}
       <Link href="/" className="flex items-center relative group">
         <Image
-          src="/logo.png"
+          src="/logo-main.svg"
           alt="NEGA+IVE"
           width={120}
           height={40}
-          className="h-10 -mt-4 w-auto transition-all duration-300 group-hover:brightness-110"
+          className="h-10  w-auto transition-all duration-300 group-hover:brightness-110"
           priority
         />
         <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300" />

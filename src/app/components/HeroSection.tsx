@@ -45,7 +45,7 @@ export default function HeroSection({ tagline, title, description }: HeroSection
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="font-serif text-6xl md:text-7xl lg:text-8xl text-text-primary mb-8 leading-tight tracking-tight"
+          className="font-serif text-6xl md:text-7xl lg:text-8xl  mb-8 leading-tight tracking-tight"
         >
           {title}
         </motion.h1>

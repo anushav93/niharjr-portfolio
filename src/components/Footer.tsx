@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
   }, []);
 
   return (
-    <footer className="w-full  bg-stone-200">
+    <footer className="w-full  bg-[#f5e9df]">
       {/* Accent line */}
       <div className="w-full h-1 " />
       
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
         <div className="mx-auto">
           
           {/* Certificates Section - Highlighted */}
-          <div className="mb-16 border border-stone-300 p-8 bg-stone-300">
+          <div className="mb-16 border border-stone-300 p-8 bg-[#d7cbc1]">
             <div className="text-center mb-6">
               <h3 className="text-xs tracking-[0.3em] uppercase text-primary-600 font-medium mb-2">
                 Certified Professional
@@ -112,7 +112,7 @@ const Footer: React.FC = () => {
             {/* Logo & Description */}
             <div className="md:col-span-2">
               <Image
-                src="/logo.png"
+                src="/logo-main.svg"
                 alt="NEGA+IVE"
                 width={120}
                 height={40}

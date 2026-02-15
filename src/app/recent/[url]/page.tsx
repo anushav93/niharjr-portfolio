@@ -59,7 +59,7 @@ export default async function RecentProjectPage({
   }));
 
   return (
-    <div className="min-h-screen bg-stone-200">
+    <div className="min-h-screen bg-[#f5e9df]">
       {/* Header */}
       <div className="relative">
         <div className="absolute top-20 left-0 w-24 h-1 bg-primary-500" />

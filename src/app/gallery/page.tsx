@@ -134,7 +134,7 @@ export default async function GalleryPage({
       : collections.find((c) => c.title === active)?.photos ?? [];
 
   return (
-    <div className="min-h-screen bg-stone-200">
+    <div className="min-h-screen bg-[#f5e9df]">
       {/* Gallery Header with accent */}
       <div className="relative">
         <div className="absolute top-20 left-0 w-24 h-1 bg-primary-500" />

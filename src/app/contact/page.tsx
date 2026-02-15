@@ -10,7 +10,7 @@ const ContactPage: React.FC = async () => {
   const siteData = await getSiteSettings();
 
   return (
-    <div className="min-h-screen bg-stone-200">
+    <div className="min-h-screen bg-[#f5e9df]">
       {/* Contact Header with accent */}
       <div className="relative">
         <div className="absolute top-20 left-0 w-24 h-1 bg-primary-500" />
@@ -39,7 +39,7 @@ const ContactPage: React.FC = async () => {
         <div className="max-w-4xl mx-auto px-6 mb-16">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {siteData.contactInfo.email && (
-              <div className="group relative p-6 border border-stone-300 transition-all bg-bg-secondary/50">
+              <div className="group relative p-6 border border-stone-900 hover:border-stone-900/0 transition-all bg-[#f5e9df]">
                 <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="text-center">
                   <p className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-3 font-medium">
@@ -57,7 +57,7 @@ const ContactPage: React.FC = async () => {
             )}
             
             {siteData.contactInfo.phone && (
-              <div className="group relative p-6 border border-stone-300 transition-all bg-bg-secondary/50">
+              <div className="group relative p-6 border border-stone-900 hover:border-stone-900/0 transition-all bg-[#f5e9df]">
                 <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="text-center">
                   <p className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-3 font-medium">
@@ -75,7 +75,7 @@ const ContactPage: React.FC = async () => {
             )}
             
             {siteData.contactInfo.location && (
-              <div className="group relative p-6 border border-stone-300 transition-all bg-bg-secondary/50">
+              <div className="group relative p-6 border border-stone-900 hover:border-stone-900/0 transition-all bg-[#f5e9df]">
                 <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="text-center">
                   <p className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-3 font-medium">

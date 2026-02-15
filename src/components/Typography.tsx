@@ -27,7 +27,7 @@ const Typography: React.FC<TypographyProps> = ({
 }) => {
   const Tag = wrapper || variant;
 
-  let defaultClasses = "";
+  let defaultClasses = "!text-[#825759]";
 
   // Base typography styles for each variant
   switch (variant) {
