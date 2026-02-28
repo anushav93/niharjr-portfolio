@@ -3,7 +3,7 @@ import GoogleProvider from "next-auth/providers/google"
 
 // Authorized admin emails
 const AUTHORIZED_EMAILS = [
-  process.env.ADMIN_EMAIL || "nihar@niharjreddy.com",
+  process.env.ADMIN_EMAIL || "hello@negativereel.com",
   "vuday23@gmail.com",
   "niharjreddy@gmail.com",
   "anushaventrapragada93@gmail.com"

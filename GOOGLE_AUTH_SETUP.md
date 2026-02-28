@@ -87,7 +87,7 @@ In `src/lib/auth.ts`, update the authorized emails list:
 
 ```typescript
 const authorizedEmails = [
-  process.env.ADMIN_EMAIL || "nihar@niharjreddy.com",
+  process.env.ADMIN_EMAIL || "nihar@negativereel.com",
   "another-authorized@gmail.com",  // Add more emails here
   "team-member@domain.com",        // Add team members
 ]
@@ -146,7 +146,7 @@ When deploying to production:
 
 1. **Update Google OAuth**:
    - Add production redirect URI in Google Console
-   - Example: `https://niharjreddy.com/api/auth/callback/google`
+   - Example: `https://www.negativereel.com/api/auth/callback/google`
 
 2. **Update Environment Variables**:
    ```bash

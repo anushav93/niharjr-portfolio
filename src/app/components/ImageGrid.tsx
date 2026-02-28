@@ -9,7 +9,7 @@ type Photo = {
   user?: { name?: string };
 };
 
-// Helper function to generate srcset for Unsplash images
+// Helper function to generate srcset for responsive images
 const generateSrcSet = (photo: Photo) => {
   if (!photo.urls.regular) return '';
   

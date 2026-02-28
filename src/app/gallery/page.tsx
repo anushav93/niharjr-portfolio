@@ -1,6 +1,5 @@
 import GalleryClient from "./GalleryClient";
 import { getGalleryCollections } from "@/lib/contentful";
-import { UNSPLASH_ACCESS_KEY, UNSPLASH_USERNAME } from "@/functions/config";
 import { Suspense } from "react";
 
 // Cache for 1 hour (3600 seconds)
@@ -17,98 +16,31 @@ type Photo = {
 type Collection = { id: string; title: string; photos: Photo[] };
 
 /**
- * Fetch from Contentful first, fallback to Unsplash if no content
+ * Fetch gallery collections from Contentful
  */
 async function fetchCollections(): Promise<Collection[]> {
-  // Try Contentful first
   try {
     const contentfulCollections = await getGalleryCollections();
     
-    if (contentfulCollections.length > 0) {
-      // Transform Contentful format to match expected format
-      return contentfulCollections.map((collection) => ({
-        id: collection.id,
-        title: collection.name,
-        photos: collection.photos.map((photo) => ({
-          id: photo.id,
-          title: photo.title,
-          alt_description: photo.alt,
-          description: photo.title,
-          urls: {
-            small: `${photo.url}?w=400&fm=webp&q=80`,
-            regular: `${photo.url}?w=1080&fm=webp&q=85`,
-            full: photo.url,
-          },
-          user: { name: 'Portfolio' },
-        })),
-      }));
-    }
+    // Transform Contentful format to match expected format
+    return contentfulCollections.map((collection) => ({
+      id: collection.id,
+      title: collection.name,
+      photos: collection.photos.map((photo) => ({
+        id: photo.id,
+        title: photo.title,
+        alt_description: photo.alt,
+        description: photo.title,
+        urls: {
+          small: `${photo.url}?w=400&fm=webp&q=80`,
+          regular: `${photo.url}?w=1080&fm=webp&q=85`,
+          full: photo.url,
+        },
+        user: { name: 'Portfolio' },
+      })),
+    }));
   } catch (error) {
     console.error('Error fetching from Contentful:', error);
-  }
-
-  // Fallback to Unsplash
-  try {
-    const username = UNSPLASH_USERNAME;
-    const headers = { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` } as any;
-    
-    // Create abort controller for timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
-    
-    const collectionsRes = await fetch(
-      `https://api.unsplash.com/users/${username}/collections?per_page=30`,
-      { 
-        headers, 
-        next: { revalidate: 3600 },
-        signal: controller.signal
-      }
-    );
-    
-    clearTimeout(timeoutId);
-    
-    if (!collectionsRes.ok) {
-      console.error('Failed to fetch collections:', collectionsRes.status, collectionsRes.statusText);
-      return [];
-    }
-    
-    const collections = await collectionsRes.json();
-    
-    const collectionsWithPhotos: Collection[] = await Promise.all(
-      collections.map(async (collection: any) => {
-        try {
-          // Create abort controller for timeout
-          const photoController = new AbortController();
-          const photoTimeoutId = setTimeout(() => photoController.abort(), 10000);
-          
-          const photosRes = await fetch(
-            `https://api.unsplash.com/collections/${collection.id}/photos?per_page=30`,
-            { 
-              headers, 
-              next: { revalidate: 3600 },
-              signal: photoController.signal
-            }
-          );
-          
-          clearTimeout(photoTimeoutId);
-          
-          if (!photosRes.ok) {
-            console.error(`Failed to fetch photos for collection ${collection.id}:`, photosRes.status, photosRes.statusText);
-            return { ...collection, photos: [] };
-          }
-          
-          const photos = await photosRes.json();
-          return { ...collection, photos };
-        } catch (error) {
-          console.error(`Error fetching photos for collection ${collection.id}:`, error);
-          return { ...collection, photos: [] };
-        }
-      })
-    );
-    
-    return collectionsWithPhotos;
-  } catch (error) {
-    console.error('Error fetching collections:', error);
     return [];
   }
 }

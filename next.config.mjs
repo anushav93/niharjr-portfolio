@@ -24,14 +24,6 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.ctfassets.net', // Contentful images
       },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com', // Unsplash images (fallback)
-      },
-      {
-        protocol: 'https',
-        hostname: 'plus.unsplash.com', // Unsplash plus images
-      },
     ],
   },
   // Add dependency resolution tolerance
@@ -56,8 +48,6 @@ const nextConfig = {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     ADMIN_EMAIL: process.env.ADMIN_EMAIL,
-    // Unsplash (for fallback/migration)
-    UNSPLASH_ACCESS_KEY: process.env.UNSPLASH_ACCESS_KEY,
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {

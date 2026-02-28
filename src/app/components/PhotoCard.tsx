@@ -1,6 +1,6 @@
 import React from "react";
 
-type UnsplashLikePhoto = {
+type Photo = {
   id?: string;
   alt_description?: string | null;
   description?: string | null;
@@ -9,7 +9,7 @@ type UnsplashLikePhoto = {
 };
 
 type PhotoCardProps = {
-  photo: UnsplashLikePhoto;
+  photo: Photo;
   onClick?: () => void;
 };
 

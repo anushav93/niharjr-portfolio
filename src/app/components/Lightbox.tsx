@@ -6,7 +6,7 @@ type Photo = {
   alt_description?: string | null;
 };
 
-// Helper function to generate srcset for Unsplash images in lightbox
+// Helper function to generate srcset for lightbox images
 const generateLightboxSrcSet = (photo: Photo) => {
   if (!photo.urls.full) return '';
   

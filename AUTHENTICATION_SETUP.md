@@ -15,7 +15,7 @@ SANITY_API_TOKEN=your_write_token_here
 # Authentication (NEW - add these)
 NEXTAUTH_SECRET=your_random_secret_key_here
 NEXTAUTH_URL=http://localhost:3000
-ADMIN_EMAIL=nihar@niharjreddy.com
+ADMIN_EMAIL=nihar@negativereel.com
 ADMIN_PASSWORD=your_secure_password
 
 # Email (existing - keep these)
@@ -57,7 +57,7 @@ NEXTAUTH_URL=https://your-domain.com
 ## 🔐 Login Information
 
 ### Demo Credentials (Change These!)
-- **Email**: nihar@niharjreddy.com
+- **Email**: nihar@negativereel.com
 - **Password**: admin123
 
 ### Your Login Flow

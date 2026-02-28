@@ -1,25 +1,22 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
 // Initialize Resend with your API key
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // The verified email domain
-const VERIFIED_EMAIL = "nihar@niharjreddy.com";
+const VERIFIED_EMAIL = "nihar@negativereel.com";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
+export async function POST(request: NextRequest) {
   try {
-    const { name, email, phone, message } = req.body;
+    const body = await request.json();
+    const { name, email, phone, message } = body;
 
     if (!name || !email || !message) {
-      return res.status(400).json({ error: 'Missing required fields' });
+      return NextResponse.json(
+        { error: 'Missing required fields' },
+        { status: 400 }
+      );
     }
 
     try {
@@ -45,8 +42,8 @@ export default async function handler(
               <hr style="border: 1px solid #eee; margin: 20px 0;" />
               <p style="font-size: 12px; color: #666;">
                 <strong>Nihar J Reddy Photography</strong><br>
-                Email: nihar@niharjreddy.com<br>
-                Website: www.niharjreddy.com
+                Email: nihar@negativereel.com<br>
+                Website: www.negativereel.com
               </p>
               <p style="font-size: 12px; color: #666;">
                 This is an automated email sent from your contact form.
@@ -66,8 +63,8 @@ ${message}
 
 ---
 Nihar J Reddy Photography
-Email: nihar@niharjreddy.com
-Website: www.niharjreddy.com
+Email: nihar@negativereel.com
+Website: www.negativereel.com
         `,
       });
 
@@ -97,8 +94,8 @@ Website: www.niharjreddy.com
               <hr style="border: 1px solid #eee; margin: 20px 0;" />
               <p style="font-size: 12px; color: #666;">
                 <strong>Nihar J Reddy Photography</strong><br>
-                Email: nihar@niharjreddy.com<br>
-                Website: www.niharjreddy.com
+                Email: nihar@negativereel.com<br>
+                Website: www.negativereel.com
               </p>
             </body>
           </html>
@@ -107,10 +104,13 @@ Website: www.niharjreddy.com
 
       if (userEmailError) {
         console.error("Error sending confirmation email:", userEmailError);
-        return res.status(500).json({ error: "Failed to send confirmation email" });
+        return NextResponse.json(
+          { error: "Failed to send confirmation email" },
+          { status: 500 }
+        );
       }
 
-      return res.status(200).json({
+      return NextResponse.json({
         message: "Form submitted successfully",
         adminEmail: "Sent",
         userEmail: "Sent",
@@ -118,10 +118,16 @@ Website: www.niharjreddy.com
 
     } catch (emailError) {
       console.error("Resend API error:", emailError);
-      return res.status(500).json({ error: "Failed to send email" });
+      return NextResponse.json(
+        { error: "Failed to send email" },
+        { status: 500 }
+      );
     }
   } catch (error) {
     console.error("Error processing form submission:", error);
-    return res.status(500).json({ error: "An error occurred while processing your request" });
+    return NextResponse.json(
+      { error: "An error occurred while processing your request" },
+      { status: 500 }
+    );
   }
 }

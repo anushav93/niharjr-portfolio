@@ -24,7 +24,7 @@ interface Photo {
   };
 }
 
-// Helper function to generate srcset for Unsplash images
+// Helper function to generate srcset for responsive images
 const generateSrcSet = (photo: Photo) => {
   if (!photo.urls.regular) return '';
   
@@ -246,7 +246,7 @@ const Modal: React.FC<{
 
           <img
             src={photo.urls.full || photo.urls.regular}
-            alt={photo.alt_description || "Unsplash photo"}
+            alt={photo.alt_description || "Photo"}
             className="w-full h-auto max-h-[70vh] object-contain"
             onLoad={handleImageLoad}
             draggable={false}
@@ -354,7 +354,7 @@ const PhotoGrid: React.FC<{ photos: Photo[] }> = ({ photos }) => {
               src={photo.urls.regular}
               srcSet={photo.urls.regular ? generateSrcSet(photo) : ''}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              alt={photo.alt_description || "Unsplash photo"}
+              alt={photo.alt_description || "Photo"}
               className="w-full  cursor-pointer hover:opacity-90 transition-opacity"
             />
           </motion.div>

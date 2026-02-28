@@ -10,7 +10,7 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfa
 export const metadata: Metadata = {
   title: "Nihar J Reddy Photography",
   description: "Professional photographer specializing in capturing lifes beautiful moments through creative and artistic photography",
-  metadataBase: new URL("https://niharjreddy.com"),
+  metadataBase: new URL("https://www.negativereel.com"),
   openGraph: {
     title: "Nihar J Reddy Photography",
     description: "Professional photographer specializing in capturing lifes beautiful moments through creative and artistic photography",
