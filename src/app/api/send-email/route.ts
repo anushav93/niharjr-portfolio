@@ -7,15 +7,47 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // The verified email domain
 const VERIFIED_EMAIL = "nihar@negativereel.com";
 
+const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+
+async function verifyTurnstileToken(token: string): Promise<boolean> {
+  const formData = new URLSearchParams();
+  formData.append("secret", process.env.CLOUDFLARE_SECRET_KEY!);
+  formData.append("response", token);
+
+  const res = await fetch(TURNSTILE_VERIFY_URL, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json() as { success: boolean };
+  return data.success;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, phone, message } = body;
+    const { name, email, phone, message, turnstileToken } = body;
 
     if (!name || !email || !message) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
+      );
+    }
+
+    // Verify Cloudflare Turnstile token
+    if (!turnstileToken) {
+      return NextResponse.json(
+        { error: 'Security check token is missing' },
+        { status: 400 }
+      );
+    }
+
+    const isTurnstileValid = await verifyTurnstileToken(turnstileToken);
+    if (!isTurnstileValid) {
+      return NextResponse.json(
+        { error: 'Security check failed. Please try again.' },
+        { status: 403 }
       );
     }
 

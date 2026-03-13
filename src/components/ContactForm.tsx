@@ -1,14 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { cn } from "@/functions/cn";
 import CornerFrameButton from "./CornerFrameButton";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!;
 
 const ContactForm: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [honeypot, setHoneypot] = useState(""); // Bot detection
+  const [honeypot, setHoneypot] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileInstance>(null);
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
@@ -43,6 +48,15 @@ const ContactForm: React.FC = () => {
       return;
     }
 
+    // Turnstile verification
+    if (!turnstileToken) {
+      setError("Please complete the security check");
+      timeoutRef.current.error = setTimeout(() => {
+        setError("");
+      }, 3000);
+      return;
+    }
+
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -66,6 +80,7 @@ const ContactForm: React.FC = () => {
           name,
           email,
           message,
+          turnstileToken,
         }),
       });
 
@@ -86,11 +101,15 @@ const ContactForm: React.FC = () => {
         setName("");
         setEmail("");
         setMessage("");
+        setTurnstileToken(null);
+        turnstileRef.current?.reset();
         setStatus("idle");
       }, 3000);
     } catch (err) {
       setStatus("error");
-      
+      setTurnstileToken(null);
+      turnstileRef.current?.reset();
+
       // Clear any existing timeouts
       if (timeoutRef.current.success) clearTimeout(timeoutRef.current.success);
       if (timeoutRef.current.error) clearTimeout(timeoutRef.current.error);
@@ -99,6 +118,7 @@ const ContactForm: React.FC = () => {
       setError(err instanceof Error ? err.message : 'Failed to send message. Please try again.');
       timeoutRef.current.error = setTimeout(() => {
         setError("");
+        setStatus("idle");
       }, 3000);
     }
   };
@@ -195,7 +215,23 @@ const ContactForm: React.FC = () => {
           />
         </div>
 
-     
+        {/* Cloudflare Turnstile Widget */}
+        <div className="flex justify-start">
+          <Turnstile
+            ref={turnstileRef}
+            siteKey={TURNSTILE_SITE_KEY}
+            onSuccess={(token) => setTurnstileToken(token)}
+            onExpire={() => {
+              setTurnstileToken(null);
+              turnstileRef.current?.reset();
+            }}
+            onError={() => {
+              setTurnstileToken(null);
+              setError("Security check failed. Please try again.");
+            }}
+            options={{ theme: "light" }}
+          />
+        </div>
 
         {/* Success Message */}
         {status === "success" && (
@@ -222,7 +258,7 @@ const ContactForm: React.FC = () => {
 
         <CornerFrameButton 
         
-        type="submit" disabled={status === "loading" || status === "success"}>  <span className="relative z-10">
+        type="submit" disabled={status === "loading" || status === "success" || !turnstileToken}>  <span className="relative z-10">
             {status === "loading" ? "Sending..." : status === "success" ? "Sent!" : "Send Message"}
           </span></CornerFrameButton>
              {/* Error Message */}
