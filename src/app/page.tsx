@@ -1,56 +1,61 @@
-import { getHomepage } from "@/lib/contentful";
-import type { Homepage } from "@/types/contentful";
-import HeroSection from "./components/HeroSection";
-import FeaturedSection from "./components/FeaturedSection";
-import CornerFrameButton from "@/components/CornerFrameButton";
+import { notFound } from 'next/navigation';
+import { getEntry, photoSrc, assetsToPhotos } from '@/lib/contentful';
+import { CONTENTFUL_ENTRIES } from '@/config/contentful';
+import type { HomepageFields, RecentProjectFields } from '@/types/contentful';
+import type { Entry } from 'contentful';
+import HeroSection from '@/components/home/HeroSection';
+import FeaturedSection from '@/components/home/FeaturedSection';
+import CornerFrameButton from '@/components/CornerFrameButton';
 
-// Revalidate every 60 seconds for ISR
 export const revalidate = 60;
 
-// Helper to get a random item from array
 function getRandomItem<T>(array: T[]): T | undefined {
   if (array.length === 0) return undefined;
   return array[Math.floor(Math.random() * array.length)];
 }
 
 export default async function HomePage() {
-  // Fetch homepage content
-  const homepageData: Homepage | null = await getHomepage();
+  const entry = await getEntry<HomepageFields>(CONTENTFUL_ENTRIES.homepage, { include: 3 });
+  if (!entry) notFound();
 
-  // Transform recent projects for FeaturedSection
-  // Each project displays a random image from its assets
-  const recentProjectsForDisplay = (homepageData?.recentProjects || [])
-    .filter(project => project.assets.length > 0)
-    .map(project => {
-      const randomAsset = getRandomItem(project.assets);
+  const fields = entry.fields;
+  const recentProjects = (fields.recentProjects ?? []) as Entry<RecentProjectFields>[];
+
+  const projectsForDisplay = recentProjects
+    .map((project) => {
+      const projectFields = project.fields;
+      const photos = assetsToPhotos(projectFields.assets);
+      if (photos.length === 0) return null;
+      const randomPhoto = getRandomItem(photos)!;
       return {
-        src: randomAsset ? `${randomAsset.url}?w=800&h=1000&fit=fill&fm=webp&q=90` : '',
-        alt: randomAsset?.alt || project.title,
-        title: project.title,
-        href: `/recent/${project.url}`,
+        src: photoSrc(randomPhoto, 800, 90),
+        alt: randomPhoto.alt,
+        title: projectFields.title,
+        href: `/recent/${projectFields.url}`,
       };
-    });
-
-  const tagline = homepageData?.hero?.tagline || 'NJR';
-  const title = homepageData?.hero?.title || 'Visual Storyteller & Photographer';
-  const description = homepageData?.hero?.description || 'Capturing authentic moments through the lens';
+    })
+    .filter(Boolean) as { src: string; alt: string; title: string; href: string }[];
 
   return (
     <div className="min-h-screen bg-[#f5e9df]">
-      <HeroSection 
-        tagline={tagline}
-        title={title}
-        description={description}
+      <HeroSection
+        tagline={fields.tagline}
+        title={fields.title}
+        description={fields.description || ''}
       />
 
-      {recentProjectsForDisplay.length > 0 && (
-        <FeaturedSection projects={recentProjectsForDisplay} />
+      {fields.recentSectionTitle && projectsForDisplay.length > 0 && (
+        <FeaturedSection
+          sectionTitle={fields.recentSectionTitle}
+          projects={projectsForDisplay}
+        />
       )}
 
-      {/* CTA */}
-      <div className="text-center pb-32 px-6">
-        <CornerFrameButton href="/gallery">View Full Gallery</CornerFrameButton>
-      </div>
+      {fields.galleryCtaText && (
+        <div className="text-center pb-32 px-6">
+          <CornerFrameButton href="/gallery">{fields.galleryCtaText}</CornerFrameButton>
+        </div>
+      )}
     </div>
   );
 }

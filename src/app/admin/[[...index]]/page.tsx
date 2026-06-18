@@ -2,7 +2,6 @@
 
 import { useSession, signOut } from 'next-auth/react'
 import { useState, useEffect } from 'react'
-import { getSiteSettings } from '@/lib/contentful'
 
 export default function AdminPage() {
   const { data: session, status } = useSession()
@@ -10,29 +9,11 @@ export default function AdminPage() {
   const [hasConnection, setHasConnection] = useState(false)
 
   useEffect(() => {
-    // Test Contentful connection
-    const testConnection = async () => {
-      try {
-        console.log('Testing Contentful connection...')
-        
-        // Try a simple query first
-        const result = await getSiteSettings()
-        console.log('Connection successful, result:', result)
-        setHasConnection(true)
-      } catch (error) {
-        console.error('Contentful connection failed:', error)
-        console.error('Error details:', {
-          message: error instanceof Error ? error.message : 'Unknown error',
-          stack: error instanceof Error ? error.stack : 'No stack trace',
-          name: error instanceof Error ? error.name : 'Unknown error type'
-        })
-        setHasConnection(false)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    testConnection()
+    fetch('/api/cms-health')
+      .then((res) => res.json())
+      .then((data) => setHasConnection(!!data.ok))
+      .catch(() => setHasConnection(false))
+      .finally(() => setIsLoading(false))
   }, [])
 
   const handleLogout = async () => {

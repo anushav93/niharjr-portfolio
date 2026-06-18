@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { getSiteSettingsEmail } from '@/lib/contentful';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const VERIFIED_EMAIL = "nihar@negativereel.com";
+const VERIFIED_SENDER = 'nihar@negativereel.com';
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 // ---------------------------------------------------------------------------
@@ -168,10 +169,15 @@ export async function POST(request: NextRequest) {
     }
 
     try {
+      const cmsEmail = await getSiteSettingsEmail();
+      if (!cmsEmail) {
+        return NextResponse.json({ error: 'Contact email not configured' }, { status: 503 });
+      }
+
       // First send the admin notification
       const { data: adminEmailData, error: adminEmailError } = await resend.emails.send({
-        from: `Nihar J Reddy Photography <${VERIFIED_EMAIL}>`,
-        to: "hello@negativereel.com",
+        from: `Nihar J Reddy Photography <${VERIFIED_SENDER}>`,
+        to: cmsEmail,
         bcc: ["vuday23@gmail.com"],
         replyTo: email,
         subject: `New Contact Form Submission from ${name}`,
@@ -228,7 +234,7 @@ Website: www.negativereel.com
 
       // Send confirmation email to user
       const { data: userEmailData, error: userEmailError } = await resend.emails.send({
-        from: `Nihar J Reddy Photography <${VERIFIED_EMAIL}>`,
+        from: `Nihar J Reddy Photography <${VERIFIED_SENDER}>`,
         to: email,
         bcc: ["hello@negativereel.com", "vuday23@gmail.com"],
         subject: "Thank you for contacting Nihar J Reddy Photography",

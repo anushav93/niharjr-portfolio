@@ -1,109 +1,100 @@
-import GalleryClient from "./GalleryClient";
-import { getGalleryCollections } from "@/lib/contentful";
-import { Suspense } from "react";
-
-// Cache for 1 hour (3600 seconds)
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
+import { getContentfulClient, getEntry, assetsToPhotos } from '@/lib/contentful';
+import { CONTENTFUL_ENTRIES } from '@/config/contentful';
+import type { GalleryCollectionFields, GalleryPageFields } from '@/types/contentful';
+import PageHeader from '@/components/layout/PageHeader';
+import PhotoGalleryClient from '@/components/gallery/PhotoGalleryClient';
+import type { GalleryFilter } from '@/components/gallery/FilterBar';
+import BackToTop from '@/components/layout/BackToTop';
 export const revalidate = 3600;
 
-type Photo = {
+type Collection = {
   id: string;
-  alt_description?: string | null;
-  description?: string | null;
-  urls: { small?: string; regular?: string; full?: string };
-  user?: { name?: string };
+  slug: string;
+  name: string;
+  photos: ReturnType<typeof assetsToPhotos>;
 };
-
-type Collection = { id: string; title: string; photos: Photo[] };
-
-/**
- * Fetch gallery collections from Contentful
- */
-async function fetchCollections(): Promise<Collection[]> {
-  try {
-    const contentfulCollections = await getGalleryCollections();
-    
-    // Transform Contentful format to match expected format
-    return contentfulCollections.map((collection) => ({
-      id: collection.id,
-      title: collection.name,
-      photos: collection.photos.map((photo) => ({
-        id: photo.id,
-        title: photo.title,
-        alt_description: photo.alt,
-        description: photo.title,
-        urls: {
-          small: `${photo.url}?w=400&fm=webp&q=80`,
-          regular: `${photo.url}?w=1080&fm=webp&q=85`,
-          full: photo.url,
-        },
-        user: { name: 'Portfolio' },
-      })),
-    }));
-  } catch (error) {
-    console.error('Error fetching from Contentful:', error);
-    return [];
-  }
+type PageProps ={
+  searchParams: Promise<{ filter?: string }>;
 }
 
 export default async function GalleryPage({
   searchParams,
-}: {
-  searchParams: Promise<{ filter?: string }>;
-}) {
-  const collections = await fetchCollections();
-  const resolvedSearchParams = await searchParams;
-  const filters = [
-    "ALL",
-    ...Array.from(new Set(collections.map((c) => c.title))),
-  ] as string[];
-  const active =
-    resolvedSearchParams?.filter && filters.includes(resolvedSearchParams.filter)
-      ? resolvedSearchParams.filter
-      : "ALL";
-  const photos =
-    active === "ALL"
-      ? collections.flatMap((c) => c.photos)
-      : collections.find((c) => c.title === active)?.photos ?? [];
+}:PageProps) {
 
+  const client = getContentfulClient();
+  if (!client) notFound();
+
+  const [pageEntry, collectionsResult, resolvedSearchParams] = await Promise.all([
+    getEntry<GalleryPageFields>(CONTENTFUL_ENTRIES.galleryPage),
+    client.getEntries<GalleryCollectionFields>({
+      content_type: 'galleryCollection',
+      order: ['fields.order'] as ['fields.order'],
+      include: 2,
+    }),
+    searchParams,
+  ]);
+
+
+
+  if (!pageEntry) notFound();
+
+  const page = pageEntry.fields;
+
+  const seenSlugs = new Set<string>();
+  const collections: Collection[] = [];
+
+  for (const entry of collectionsResult.items) {
+    const slug = entry.fields.slug;
+    if (!slug || seenSlugs.has(slug)) continue;
+    seenSlugs.add(slug);
+
+    collections.push({
+      id: entry.sys.id,
+      slug,
+      name: entry.fields.name,
+      photos: assetsToPhotos(entry.fields.photos),
+    });
+  }
+  
+
+  const filters: GalleryFilter[] = [
+    { id: 'ALL', label: 'All Work', value: 'ALL' },
+    ...collections.map((c) => ({ id: c.id, label: c.name, value: c.slug })),
+  ];
+
+ 
+
+  const filterValues = filters.map((f) => f.value);
+  const active =
+    resolvedSearchParams?.filter && filterValues.includes(resolvedSearchParams.filter)
+      ? resolvedSearchParams.filter
+      : 'ALL';
+
+      
+  const photos =
+    active === 'ALL'
+      ? collections.flatMap((c) => c.photos)
+      : collections.find((c) => c.slug === active)?.photos ?? [];
+ 
   return (
     <div className="min-h-screen bg-[#f5e9df]">
-      {/* Gallery Header with accent */}
-      <div className="relative">
-        <div className="absolute top-20 left-0 w-24 h-1 bg-primary-500" />
-        
-        <div className="pt-32 pb-12 px-6 text-center max-w-4xl mx-auto">
-          <div className="inline-block mb-4">
-            <p className="text-xs tracking-[0.3em] uppercase text-primary-600 mb-2 font-medium">
-              Gallery
-            </p>
-            <div className="h-px w-full bg-primary-400" />
-          </div>
-          
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-text-primary mb-4">
-            Portfolio
-          </h1>
-        </div>
-      </div>
-
-      {/* Gallery Content */}
+      <PageHeader
+        eyebrow={page.pageEyebrow!}
+        title={page.pageTitle}
+        subtitle={page.pageSubtitle}
+      />
       <Suspense
         fallback={
           <div className="flex items-center justify-center py-20">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
-              <p className="text-xs tracking-wider uppercase text-text-secondary">
-                Loading gallery...
-              </p>
-            </div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500" />
           </div>
         }
       >
-        <GalleryClient
-          filters={filters}
-          initialActive={active}
-          initialPhotos={photos}
-        />
+        <PhotoGalleryClient filters={filters} initialActive={active} photos={photos} />
       </Suspense>
+      <BackToTop />
     </div>
   );
 }
