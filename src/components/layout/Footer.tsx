@@ -69,12 +69,12 @@ export default function Footer({ siteSettings, logoUrl }: FooterProps) {
                     onClick={() => setSelectedPdf({ url: cert.filePath, title: cert.title })}
                     className="flex items-center gap-4 p-4 border border-stone-500 hover:border-primary-700 bg-page hover:bg-primary-100 hover:shadow-sm transition-all text-left w-full"
                   >
-                    <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary-100 text-primary-600">
+                    <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center text-primary-600">
                       {CERT_ICONS[i % CERT_ICONS.length]}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-foreground truncate">{cert.title}</p>
-                      <p className="text-xs text-subtle">View Certificate</p>
+                      <p className="text-xs ">View Certificate</p>
                     </div>
                   </CornerFrameCard>
                 ))}
