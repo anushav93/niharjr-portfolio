@@ -7,8 +7,6 @@ import PageHeader from '@/components/layout/PageHeader';
 import PhotoGalleryClient from '@/components/gallery/PhotoGalleryClient';
 import { buildPageMetadata, getSiteMetadataDefaults } from '@/lib/metadata';
 
-export const revalidate = 60;
-
 export async function generateStaticParams() {
   const client = getContentfulClient();
   if (!client) return [];

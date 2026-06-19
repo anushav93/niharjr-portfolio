@@ -10,8 +10,6 @@ import type { GalleryFilter } from '@/components/gallery/FilterBar';
 import BackToTop from '@/components/layout/BackToTop';
 import { buildPageMetadata, getSiteMetadataDefaults, truncateDescription } from '@/lib/metadata';
 
-export const revalidate = 3600;
-
 export async function generateMetadata(): Promise<Metadata> {
   const [pageEntry, defaults] = await Promise.all([
     getEntry<GalleryPageFields>(CONTENTFUL_ENTRIES.galleryPage),

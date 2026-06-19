@@ -3,8 +3,6 @@ import { getContentfulClient } from '@/lib/contentful';
 import { getSiteMetadataDefaults } from '@/lib/metadata';
 import type { RecentProjectFields } from '@/types/contentful';
 
-export const revalidate = 60;
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { siteUrl } = await getSiteMetadataDefaults();
   const baseUrl = siteUrl.replace(/\/$/, '');

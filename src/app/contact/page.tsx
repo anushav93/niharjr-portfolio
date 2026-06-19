@@ -8,8 +8,6 @@ import ContactInfoCards from '@/components/contact/ContactInfoCards';
 import ContactForm from '@/components/ContactForm';
 import { buildPageMetadata, getSiteMetadataDefaults, truncateDescription } from '@/lib/metadata';
 
-export const revalidate = 60;
-
 export async function generateMetadata(): Promise<Metadata> {
   const [contactEntry, settingsEntry, defaults] = await Promise.all([
     getEntry<ContactPageFields>(CONTENTFUL_ENTRIES.contactPage),

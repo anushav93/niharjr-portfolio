@@ -9,8 +9,6 @@ import FeaturedSection from '@/components/home/FeaturedSection';
 import CornerFrameButton from '@/components/CornerFrameButton';
 import { buildPageMetadata, getSiteMetadataDefaults, truncateDescription } from '@/lib/metadata';
 
-export const revalidate = 60;
-
 export async function generateMetadata(): Promise<Metadata> {
   const [entry, defaults] = await Promise.all([
     getEntry<HomepageFields>(CONTENTFUL_ENTRIES.homepage, { include: 1 }),

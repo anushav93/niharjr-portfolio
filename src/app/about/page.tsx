@@ -9,8 +9,6 @@ import AboutApproach from '@/components/about/AboutApproach';
 import AboutCTA from '@/components/about/AboutCTA';
 import { buildPageMetadata, getSiteMetadataDefaults, truncateDescription } from '@/lib/metadata';
 
-export const revalidate = 60;
-
 export async function generateMetadata(): Promise<Metadata> {
   const [entry, defaults] = await Promise.all([
     getEntry<AboutPageFields>(CONTENTFUL_ENTRIES.aboutPage, { include: 1 }),
