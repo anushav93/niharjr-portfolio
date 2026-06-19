@@ -20,7 +20,7 @@ export default function Navbar({ links, logoUrl, logoAlt }: NavbarProps) {
 
   return (
     <nav className="border-b border-b-stone-300 fixed top-0 left-0 right-0 z-50 w-full px-6 lg:px-8 h-24 flex items-center justify-between bg-page transition-all duration-300" aria-label="Main navigation">
-      <Link href="/" className="flex items-center relative group">
+      <Link href="/" className="flex items-center group">
         {logoUrl && (
           <SiteLogo
             src={logoUrl}
@@ -29,7 +29,6 @@ export default function Navbar({ links, logoUrl, logoAlt }: NavbarProps) {
             className="h-10 w-auto transition-all duration-300 group-hover:brightness-110"
           />
         )}
-        <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-500 group-hover:w-full transition-all duration-300" aria-hidden="true" />
       </Link>
 
       <ul className="hidden md:flex items-center gap-10">
