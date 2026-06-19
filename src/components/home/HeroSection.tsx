@@ -11,7 +11,7 @@ type HeroSectionProps = {
 export default function HeroSection({ tagline, title, description }: HeroSectionProps) {
   return (
     <section className="relative min-h-[800px] flex flex-col justify-center items-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bg-primary/50 to-bg-primary pointer-events-none z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-surface/50 to-surface pointer-events-none z-10" />
       <motion.div
         initial={{ height: 0 }}
         animate={{ height: "4rem" }}
@@ -48,7 +48,7 @@ export default function HeroSection({ tagline, title, description }: HeroSection
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed font-light"
+            className="text-lg md:text-xl text-subtext max-w-2xl mx-auto leading-relaxed font-light"
           >
             {description}
           </motion.p>

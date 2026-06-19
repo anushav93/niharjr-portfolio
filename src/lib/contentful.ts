@@ -86,13 +86,16 @@ export function assetToPhoto(asset: Asset): Photo | null {
     ? buildImageUrl(file.url)
     : '';
   const details = file.details as { image?: { width?: number; height?: number } } | undefined;
+  const title = (asset.fields.title as string) || '';
+  const description = (asset.fields.description as string) || '';
+  const alt = description || title || 'Photograph';
   return {
     id: asset.sys.id,
     url,
     width: details?.image?.width ?? 1920,
     height: details?.image?.height ?? 1080,
-    title: (asset.fields.title as string) || '',
-    alt: (asset.fields.description as string) || (asset.fields.title as string) || '',
+    title,
+    alt,
   };
 }
 

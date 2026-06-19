@@ -24,9 +24,9 @@ export default function ConditionalLayout({ children, siteSettings, logoUrl }: C
       <Navbar
         links={siteSettings?.quickLinks ?? []}
         logoUrl={logoUrl}
-        logoAlt={siteSettings?.brandName || siteSettings?.siteTitle || ''}
+        logoAlt={siteSettings?.brandName || siteSettings?.siteTitle || 'Home'}
       />
-      <main>{children}</main>
+      <main id="main">{children}</main>
       <Footer siteSettings={siteSettings} logoUrl={logoUrl} />
     </>
   );

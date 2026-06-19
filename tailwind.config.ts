@@ -170,20 +170,31 @@ const config: Config = {
           about: 'var(--color-route-about)',
           contact: 'var(--color-route-contact)',
         },
+        page: 'var(--color-bg-page)',
+        'surface-muted': 'var(--color-surface-muted)',
+        body: 'var(--color-text-body)',
+        brand: {
+          dark: 'var(--color-brand-dark)',
+          'dark-hover': 'var(--color-brand-dark-hover)',
+          light: 'var(--color-brand-light)',
+        },
       },
-      // Semantic text colors
+      // Semantic text colors (named to avoid conflicting with primary-* scale)
       textColor: {
-        primary: 'var(--color-text-primary)',
-        secondary: 'var(--color-text-secondary)',
-        muted: 'var(--color-text-muted)',
+        foreground: 'var(--color-text-primary)',
+        subtext: 'var(--color-text-secondary)',
+        subtle: 'var(--color-text-muted)',
         inverted: 'var(--color-text-inverted)',
+        body: 'var(--color-text-body)',
       },
-      // Semantic background colors
+      // Semantic background colors (named to avoid conflicting with primary-* scale)
       backgroundColor: {
-        primary: 'var(--color-bg-primary)',
-        secondary: 'var(--color-bg-secondary)',
-        tertiary: 'var(--color-bg-tertiary)',
+        surface: 'var(--color-bg-primary)',
+        'surface-secondary': 'var(--color-bg-secondary)',
+        'surface-tertiary': 'var(--color-bg-tertiary)',
         inverted: 'var(--color-bg-inverted)',
+        page: 'var(--color-bg-page)',
+        'surface-muted': 'var(--color-surface-muted)',
       },
       // Semantic border colors
       borderColor: {

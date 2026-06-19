@@ -23,24 +23,23 @@ export default function CookieConsent() {
     <div
       role="dialog"
       aria-label="Cookie consent"
-      className="fixed bottom-4 right-4 z-[100] max-w-xs p-3 rounded-sm shadow-lg border border-[#544536]"
-      style={{ backgroundColor: '#2a231f' }}
+      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-2rem)] max-w-xs p-3 rounded-sm shadow-lg border border-primary-700 bg-brand-dark"
     >
-      <p className="text-[11px] leading-snug text-[#f5f0e8] mb-3">
+      <p className="text-[11px] leading-snug text-primary-100 mb-3">
         We use cookies only for the performance of the website.
       </p>
       <div className="flex gap-2">
         <button
           type="button"
           onClick={() => handleChoice(false)}
-          className="flex-1 px-2 py-1.5 text-[10px] tracking-[0.12em] uppercase border border-[#6e5c44] text-[#e8dcc8] hover:border-[#bfa078] hover:text-[#faf8f5] transition-colors"
+          className="flex-1 px-2 py-1.5 text-[10px] tracking-[0.12em] uppercase border border-primary-600 text-primary-200 hover:border-primary-400 hover:text-primary-50 transition-colors"
         >
           Decline
         </button>
         <button
           type="button"
           onClick={() => handleChoice(true)}
-          className="flex-1 px-2 py-1.5 text-[10px] tracking-[0.12em] uppercase bg-[#faf8f5] text-[#2a231f] hover:bg-[#f5f0e8] transition-colors"
+          className="flex-1 px-2 py-1.5 text-[10px] tracking-[0.12em] uppercase bg-brand-light text-brand-dark hover:bg-primary-100 transition-colors"
         >
           Accept
         </button>

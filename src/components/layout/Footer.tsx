@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import type { SiteSettingsFields } from '@/types/contentful';
 import CornerFrameCard from '@/components/ui/CornerFrameCard';
+import SiteLogo from '@/components/layout/SiteLogo';
 import {FaInstagram } from 'react-icons/fa';
 import { FaRegEnvelope } from "react-icons/fa";
 const PDFModal = dynamic(() => import('@/components/PDFModal'), { ssr: false });
@@ -43,18 +43,21 @@ export default function Footer({ siteSettings, logoUrl }: FooterProps) {
   ].filter((s) => s.url);
 
   return (
-    <footer className="w-full bg-[#f5e9df]">
+    <footer className="w-full bg-page">
       <div className="px-6 md:px-12 py-16">
         <div className="mx-auto">
           {certificates.length > 0 && siteSettings.certificatesTitle && (
-            <div className="mb-16 border border-stone-300 p-8 bg-[#d7cbc1]">
+            <section className="mb-16 border border-stone-300 p-8 bg-surface-muted" aria-labelledby="certificates-heading">
               <div className="text-center mb-6">
-                <p className="text-xs tracking-[0.3em] uppercase text-primary-600 font-medium mb-2">
+                <h2
+                  id="certificates-heading"
+                  className="text-xs tracking-[0.3em] uppercase text-primary-600 font-medium mb-2"
+                >
                   {siteSettings.certificatesTitle}
-                </p>
+                </h2>
                 <div className="h-px w-24 bg-primary-400 mx-auto mb-4" />
                 {siteSettings.certificatesDescription && (
-                  <p className="text-sm text-text-secondary">{siteSettings.certificatesDescription}</p>
+                  <p className="text-sm text-subtext">{siteSettings.certificatesDescription}</p>
                 )}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
@@ -64,50 +67,48 @@ export default function Footer({ siteSettings, logoUrl }: FooterProps) {
                     cornerSize="sm"
                     frameColor="border-primary-700"
                     onClick={() => setSelectedPdf({ url: cert.filePath, title: cert.title })}
-                    className="flex items-center gap-4 p-4 border border-stone-500 hover:border-primary-700 bg-[#f5e9df] hover:bg-primary-100 hover:shadow-sm transition-all text-left w-full"
+                    className="flex items-center gap-4 p-4 border border-stone-500 hover:border-primary-700 bg-page hover:bg-primary-100 hover:shadow-sm transition-all text-left w-full"
                   >
                     <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary-100 text-primary-600">
                       {CERT_ICONS[i % CERT_ICONS.length]}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-text-primary truncate">{cert.title}</p>
-                      <p className="text-xs text-text-muted">View Certificate</p>
+                      <p className="text-sm font-medium text-foreground truncate">{cert.title}</p>
+                      <p className="text-xs text-subtle">View Certificate</p>
                     </div>
                   </CornerFrameCard>
                 ))}
               </div>
-            </div>
+            </section>
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
               {logoUrl && (
-                <Image
+                <SiteLogo
                   src={logoUrl}
-                  alt={siteSettings.brandName || siteSettings.siteTitle}
-                  width={120}
-                  height={40}
+                  alt={siteSettings.brandName || siteSettings.siteTitle || 'Site logo'}
                   className="h-10 w-auto mb-6"
                 />
               )}
               {siteSettings.footerDescription && (
-                <p className="text-sm text-text-secondary leading-relaxed max-w-md">
+                <p className="text-sm text-subtext leading-relaxed max-w-md">
                   {siteSettings.footerDescription}
                 </p>
               )}
             </div>
 
             {links.length > 0 && (
-              <div>
-                <h4 className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-4 font-medium">
+              <nav aria-labelledby="footer-nav-heading">
+                <h2 id="footer-nav-heading" className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-4 font-medium">
                   Navigate
-                </h4>
+                </h2>
                 <ul className="space-y-3">
                   {links.map((link) => (
                     <li key={link.url}>
                       <Link
                         href={link.url}
-                        className="group inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-primary-600 transition-colors"
+                        className="group inline-flex items-center gap-1.5 text-sm text-subtext hover:text-primary-600 transition-colors"
                       >
                         <span className="inline-block h-0.5 w-0 shrink-0 bg-primary-500 transition-all duration-300 group-hover:w-4" />
                         {link.title}
@@ -115,19 +116,19 @@ export default function Footer({ siteSettings, logoUrl }: FooterProps) {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </nav>
             )}
 
-            <div className={links.length > 0 ? undefined : 'md:col-span-2'}>
-              <h4 className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-4 font-medium">
+            <nav aria-labelledby="footer-connect-heading" className={links.length > 0 ? undefined : 'md:col-span-2'}>
+              <h2 id="footer-connect-heading" className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-4 font-medium">
                 Connect
-              </h4>
+              </h2>
               <ul className="space-y-3">
                 {siteSettings.contactCtaText && (
                   <li>
                     <Link
                       href="/contact"
-                      className="group inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-primary-600 transition-colors"
+                      className="group inline-flex items-center gap-1.5 text-sm text-subtext hover:text-primary-600 transition-colors"
                     >
                       <span className="inline-block h-0.5 w-0 shrink-0 bg-primary-500 transition-all duration-300 group-hover:w-4" />
                       <FaRegEnvelope className="w-4 h-4 shrink-0 text-primary-600" />
@@ -141,7 +142,7 @@ export default function Footer({ siteSettings, logoUrl }: FooterProps) {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-primary-600 transition-colors"
+                      className="group inline-flex items-center gap-1.5 text-sm text-subtext hover:text-primary-600 transition-colors"
                     >
                       <span className="inline-block h-0.5 w-0 shrink-0 bg-primary-500 transition-all duration-300 group-hover:w-4" />
                       {social.icon && <social.icon className="w-4 h-4 shrink-0 text-primary-600" />}
@@ -150,12 +151,12 @@ export default function Footer({ siteSettings, logoUrl }: FooterProps) {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           </div>
 
           <div className="border-t border-border-default pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             {siteSettings.copyrightText && (
-              <p className="text-xs text-text-muted">{siteSettings.copyrightText}</p>
+              <p className="text-xs text-subtle">{siteSettings.copyrightText}</p>
             )}
             {siteSettings.brandName && (
               <div className="flex items-center gap-3">

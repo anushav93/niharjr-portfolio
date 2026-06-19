@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
 import { getContentfulClient, getEntry, assetsToPhotos } from '@/lib/contentful';
 import { CONTENTFUL_ENTRIES } from '@/config/contentful';
 import type { GalleryCollectionFields, GalleryPageFields } from '@/types/contentful';
@@ -7,7 +8,27 @@ import PageHeader from '@/components/layout/PageHeader';
 import PhotoGalleryClient from '@/components/gallery/PhotoGalleryClient';
 import type { GalleryFilter } from '@/components/gallery/FilterBar';
 import BackToTop from '@/components/layout/BackToTop';
+import { buildPageMetadata, getSiteMetadataDefaults, truncateDescription } from '@/lib/metadata';
+
 export const revalidate = 3600;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const [pageEntry, defaults] = await Promise.all([
+    getEntry<GalleryPageFields>(CONTENTFUL_ENTRIES.galleryPage),
+    getSiteMetadataDefaults(),
+  ]);
+
+  const page = pageEntry?.fields;
+
+  return buildPageMetadata({
+    title: page?.pageTitle || 'Gallery',
+    description: truncateDescription(
+      page?.pageSubtitle ||
+        `Browse the photography portfolio of ${defaults.siteTitle}.`
+    ),
+    path: '/gallery',
+  });
+}
 
 type Collection = {
   id: string;
@@ -79,7 +100,7 @@ export default async function GalleryPage({
       : collections.find((c) => c.slug === active)?.photos ?? [];
  
   return (
-    <div className="min-h-screen bg-[#f5e9df]">
+    <div className="min-h-screen bg-page">
       <PageHeader
         eyebrow={page.pageEyebrow!}
         title={page.pageTitle}

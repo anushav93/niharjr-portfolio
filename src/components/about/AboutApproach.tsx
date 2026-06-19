@@ -22,10 +22,10 @@ export default function AboutApproach({ title, description, principles }: AboutA
         {(title || description) && (
           <div className="text-center mb-16">
             {title && (
-              <h2 className="font-serif text-3xl md:text-4xl text-text-primary mb-4">{title}</h2>
+              <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-4">{title}</h2>
             )}
             {description && (
-              <p className="text-sm md:text-base text-text-secondary max-w-2xl mx-auto">{description}</p>
+              <p className="text-sm md:text-base text-subtext max-w-2xl mx-auto">{description}</p>
             )}
           </div>
         )}
@@ -35,8 +35,8 @@ export default function AboutApproach({ title, description, principles }: AboutA
             {principles.map((item, idx) => (
               <CornerFrameCard key={idx} cornerSize="lg" className="p-6 text-center">
                 <p className="text-4xl font-light text-primary-400 mb-4">{item.icon}</p>
-                <h3 className="font-serif text-xl text-text-primary mb-3">{item.title}</h3>
-                <p className="text-sm leading-relaxed text-text-secondary">{item.description}</p>
+                <h3 className="font-serif text-xl text-foreground mb-3">{item.title}</h3>
+                <p className="text-sm leading-relaxed text-subtext">{item.description}</p>
               </CornerFrameCard>
             ))}
           </div>

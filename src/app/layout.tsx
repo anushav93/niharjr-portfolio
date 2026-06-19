@@ -4,6 +4,8 @@ import Providers from '@/components/Providers';
 import ConditionalLayout from '@/components/layout/ConditionalLayout';
 import ClarityScript from '@/components/analytics/ClarityScript';
 import CookieConsent from '@/components/analytics/CookieConsent';
+import SkipLink from '@/components/layout/SkipLink';
+import { getSiteMetadataDefaults } from '@/lib/metadata';
 import { getEntry, imageUrl } from '@/lib/contentful';
 import { CONTENTFUL_ENTRIES } from '@/config/contentful';
 import type { SiteSettingsFields } from '@/types/contentful';
@@ -23,33 +25,30 @@ const playfair = Playfair_Display({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
+  const { siteTitle, siteDescription, siteUrl, ogImage } = await getSiteMetadataDefaults();
   const entry = await getEntry<SiteSettingsFields>(CONTENTFUL_ENTRIES.siteSettings, { include: 1 });
-  const fields = entry?.fields;
-
-  const title = fields?.siteTitle || 'Nihar J Reddy Photography';
-  const description = fields?.siteDescription || '';
-  const siteUrl = fields?.siteUrl || 'https://www.negativereel.com';
-  const ogImage = fields?.defaultImage
-    ? imageUrl(fields.defaultImage, { width: 1200, height: 630, fit: 'fill', format: 'webp' })
-    : undefined;
+  const keywords = entry?.fields?.keywords;
 
   return {
-    title,
-    description,
     metadataBase: new URL(siteUrl),
-    keywords: fields?.keywords,
+    title: {
+      default: siteTitle,
+      template: `%s | ${siteTitle}`,
+    },
+    description: siteDescription,
+    keywords,
     openGraph: {
-      title,
-      description,
+      title: siteTitle,
+      description: siteDescription,
       url: siteUrl,
       locale: 'en_US',
       type: 'website',
-      images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: title }] : undefined,
+      images: ogImage ? [{ url: ogImage, width: 1200, height: 630, alt: siteTitle }] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description,
+      title: siteTitle,
+      description: siteDescription,
       images: ogImage ? [ogImage] : undefined,
     },
     robots: { index: true, follow: true },
@@ -67,6 +66,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${playfair.variable} font-sans`}>
+        <SkipLink />
         {clarityId && <ClarityScript clarityId={clarityId} />}
         <Providers>
           <ConditionalLayout siteSettings={siteSettings} logoUrl={logoUrl}>

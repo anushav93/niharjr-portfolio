@@ -52,13 +52,13 @@ const CornerFrames: React.FC<{ frameColor: string; frameSize: string }> = ({
 const variantStyles = {
   primary: {
     button:
-      "inline-flex items-center justify-center bg-[#2a231f] text-[#faf8f5] border-[#2a231f] hover:bg-[#3d322a] hover:text-[#faf8f5]",
-    frame: "border-[#bfa078]",
+      "inline-flex items-center justify-center bg-brand-dark text-brand-light border-brand-dark hover:bg-brand-dark-hover hover:text-brand-light",
+    frame: "border-primary-400",
   },
   secondary: {
     button:
-      "inline-flex items-center justify-center bg-transparent text-[#2a231f] border-[#2a231f] hover:bg-[#2a231f]/5 hover:text-[#544536]",
-    frame: "border-[#6e5c44]",
+      "inline-flex items-center justify-center bg-transparent text-brand-dark border-brand-dark hover:bg-brand-dark/5 hover:text-primary-700",
+    frame: "border-primary-600",
   },
 };
 

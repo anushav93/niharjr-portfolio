@@ -3,11 +3,37 @@ import { getEntry, photoSrc, assetsToPhotos } from '@/lib/contentful';
 import { CONTENTFUL_ENTRIES } from '@/config/contentful';
 import type { HomepageFields, RecentProjectFields } from '@/types/contentful';
 import type { Entry } from 'contentful';
+import type { Metadata } from 'next';
 import HeroSection from '@/components/home/HeroSection';
 import FeaturedSection from '@/components/home/FeaturedSection';
 import CornerFrameButton from '@/components/CornerFrameButton';
+import { buildPageMetadata, getSiteMetadataDefaults, truncateDescription } from '@/lib/metadata';
 
 export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const [entry, defaults] = await Promise.all([
+    getEntry<HomepageFields>(CONTENTFUL_ENTRIES.homepage, { include: 1 }),
+    getSiteMetadataDefaults(),
+  ]);
+
+  if (!entry) {
+    return buildPageMetadata({
+      title: defaults.siteTitle,
+      description: defaults.siteDescription,
+      path: '/',
+      absoluteTitle: true,
+    });
+  }
+
+  const fields = entry.fields;
+  return buildPageMetadata({
+    title: defaults.siteTitle,
+    description: truncateDescription(fields.description || defaults.siteDescription),
+    path: '/',
+    absoluteTitle: true,
+  });
+}
 
 function getRandomItem<T>(array: T[]): T | undefined {
   if (array.length === 0) return undefined;
@@ -37,7 +63,7 @@ export default async function HomePage() {
     .filter(Boolean) as { src: string; alt: string; title: string; href: string }[];
 
   return (
-    <div className="min-h-screen bg-[#f5e9df]">
+    <div className="min-h-screen bg-page">
       <HeroSection
         tagline={fields.tagline}
         title={fields.title}

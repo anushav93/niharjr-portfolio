@@ -50,6 +50,7 @@ export default function Lightbox({
   if (!isOpen) return null;
 
   const photo = photos[index];
+  const altText = photo.alt || photo.title || 'Photograph';
 
   return (
     <div
@@ -88,7 +89,7 @@ export default function Lightbox({
       <div className="relative w-full max-w-[80vw] h-[80vh]">
         <Image
           src={photoSrc(photo, 2000, 85)}
-          alt={photo.alt}
+          alt={altText}
           fill
           priority
           sizes="(max-width: 768px) 100vw, 80vw"

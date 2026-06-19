@@ -41,7 +41,7 @@ export default function BackToTop() {
                     }}
                     whileHover={{ y: -5 }}
                     whileTap={{ scale: 0.95 }}
-                    className="fixed bottom-16 right-5 z-30 border border-stone-500 bg-[#d7cbc1] p-2 hover:border-primary-400"
+                    className="fixed bottom-16 right-5 z-30 border border-stone-500 bg-surface-muted p-2 hover:border-primary-400"
                     onClick={scrollToTop}
                     aria-label="Back to top"
                 >

@@ -16,32 +16,35 @@ export default function ContactInfoCards({ email, phone, location }: ContactInfo
   if (cards.length === 0) return null;
 
   return (
-    <div className="max-w-4xl mx-auto px-6 mb-16">
+    <section className="max-w-4xl mx-auto px-6 mb-16" aria-labelledby="contact-info-heading">
+      <h2 id="contact-info-heading" className="sr-only">
+        Contact information
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {cards.map((card) => (
           <CornerFrameCard
             key={card.label}
             cornerSize="sm"
-            className="p-6 border border-stone-900 hover:border-stone-900/0 transition-all bg-[#f5e9df]"
+            className="p-6 border border-stone-900 hover:border-stone-900/0 transition-all bg-page"
           >
             <div className="text-center">
-              <p className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-3 font-medium">
+              <h3 className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-3 font-medium">
                 {card.label}
-              </p>
+              </h3>
               {card.href ? (
                 <a
                   href={card.href}
-                  className="text-sm text-text-primary hover:text-primary-600 transition-colors break-all"
+                  className="text-sm text-foreground hover:text-primary-600 transition-colors break-all"
                 >
                   {card.content}
                 </a>
               ) : (
-                <p className="text-sm text-text-secondary">{card.content}</p>
+                <p className="text-sm text-subtext">{card.content}</p>
               )}
             </div>
           </CornerFrameCard>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

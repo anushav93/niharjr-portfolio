@@ -22,9 +22,9 @@ function GalleryLightbox({
 
   return (
     <>
-      <div className="py-8">
+      <section className="py-8" aria-label="Photo gallery">
         <ImageGrid photos={photos} onSelect={(i) => setLightboxIndex(i)} />
-      </div>
+      </section>
       <Lightbox
         isOpen={lightboxIndex !== null}
         photos={photos}

@@ -8,7 +8,17 @@
  */
 
 :root {
-  background-color: #f5e9df;
+  /* Site surface colors — used across pages and layout */
+  --color-bg-page: #f5e9df;
+  --color-surface-muted: #d7cbc1;
+  --color-text-body: #825759;
+
+  /* Brand dark — primary buttons, cookie banner, emphasis UI */
+  --color-brand-dark: #2a231f;
+  --color-brand-dark-hover: #3d322a;
+  --color-brand-light: #faf8f5;
+
+  background-color: var(--color-bg-page);
   /* ========================================================================
    * PRIMARY COLOR PALETTE
    * Warm Sepia - From NEGA+IVE logo, film photography aesthetic

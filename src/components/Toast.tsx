@@ -48,7 +48,7 @@ export default function Toast({ message, type, isVisible, onClose }: ToastProps)
       </Typography>
       <button
         onClick={onClose}
-        className="ml-2 text-white hover:text-text-inverted transition-colors"
+        className="ml-2 text-white hover:text-inverted transition-colors"
         aria-label="Close notification"
       >
         ✕

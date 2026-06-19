@@ -132,17 +132,16 @@ const ContactForm: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full">
-      {/* Section divider */}
+    <section className="w-full" aria-labelledby="contact-form-heading">
       <div className="flex items-center gap-4 mb-12">
-        <div className="h-px flex-1 bg-border-default" />
-        <h2 className="text-2xl font-light tracking-tight text-text-primary">
+        <div className="h-px flex-1 bg-border-default" aria-hidden="true" />
+        <h2 id="contact-form-heading" className="text-2xl font-light tracking-tight text-foreground">
           Send a Message
         </h2>
-        <div className="h-px flex-1 bg-border-default" />
+        <div className="h-px flex-1 bg-border-default" aria-hidden="true" />
       </div>
       
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6" noValidate>
         {/* Name Field */}
         <div className="relative group">
           <label 
@@ -154,12 +153,15 @@ const ContactForm: React.FC = () => {
           <input
             type="text"
             id="name"
+            name="name"
+            autoComplete="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={status === "loading"}
+            aria-invalid={!!error && !name}
             className={cn(
-              "w-full px-4 py-4 bg-[#f5e9df] border border-stone-500 text-text-primary",
-              "focus:outline-none focus:border-primary-500 focus:bg-primary transition-all",
+              "w-full px-4 py-4 bg-page border border-stone-500 text-foreground",
+              "focus:outline-none focus:border-primary-500 focus:bg-surface transition-all",
               "text-sm disabled:opacity-50 disabled:cursor-not-allowed",
               "group-hover:border-primary-300"
             )}
@@ -178,12 +180,15 @@ const ContactForm: React.FC = () => {
           <input
             type="email"
             id="email"
+            name="email"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={status === "loading"}
+            aria-invalid={!!error && !email}
             className={cn(
-              "w-full px-4 py-4 bg-[#f5e9df] border border-stone-500 text-text-primary",
-              "focus:outline-none focus:border-primary-500 focus:bg-primary transition-all",
+              "w-full px-4 py-4 bg-page border border-stone-500 text-foreground",
+              "focus:outline-none focus:border-primary-500 focus:bg-surface transition-all",
               "text-sm disabled:opacity-50 disabled:cursor-not-allowed",
               "group-hover:border-primary-300"
             )}
@@ -201,13 +206,15 @@ const ContactForm: React.FC = () => {
           </label>
           <textarea
             id="message"
+            name="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             disabled={status === "loading"}
+            aria-invalid={!!error && !message}
             rows={6}
             className={cn(
-              "w-full px-4 py-4 bg-[#f5e9df] border border-stone-500 text-text-primary resize-none",
-              "focus:outline-none focus:border-primary-500 focus:bg-primary transition-all",
+              "w-full px-4 py-4 bg-page border border-stone-500 text-foreground resize-none",
+              "focus:outline-none focus:border-primary-500 focus:bg-surface transition-all",
               "text-sm disabled:opacity-50 disabled:cursor-not-allowed",
               "group-hover:border-primary-300"
             )}
@@ -235,7 +242,7 @@ const ContactForm: React.FC = () => {
 
         {/* Success Message */}
         {status === "success" && (
-          <div className="p-4 border-l-2 border-success-500 bg-success-50 text-sm text-success-700">
+          <div role="alert" className="p-4 border-l-2 border-success-500 bg-success-50 text-sm text-success-700">
             Message sent successfully! I&apos;ll get back to you soon.
           </div>
         )}
@@ -263,13 +270,13 @@ const ContactForm: React.FC = () => {
             {status === "loading" ? "Sending..." : status === "success" ? "Sent!" : "Send Message"}
           </span></CornerFrameButton>
              {/* Error Message */}
-        {error && (
-          <div className="p-4 border-l-2 border-error-500 bg-error-50 text-sm text-error-700">
+             {error && (
+          <div role="alert" className="p-4 border-l-2 border-error-500 bg-error-50 text-sm text-error-700">
             {error}
           </div>
         )}
       </form>
-    </div>
+    </section>
   );
 };
 
