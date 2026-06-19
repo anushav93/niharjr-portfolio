@@ -67,7 +67,7 @@ export default function Navbar({ links, logoUrl, logoAlt }: NavbarProps) {
 
       <div
         id="mobile-navigation"
-        className={`fixed inset-0 z-40 bg-page/80 backdrop-blur-lg transition-opacity duration-500 md:hidden ${
+        className={`fixed inset-0 z-40 bg-gradient-to-b from-page from-60% via-page/95 to-transparent backdrop-blur-lg transition-opacity duration-500 md:hidden ${
           mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         aria-hidden={!mobileMenuOpen}
