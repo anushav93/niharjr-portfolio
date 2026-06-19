@@ -11,7 +11,7 @@ export default function AboutApproach({ title, description, principles }: AboutA
   if (!title && (!principles || principles.length === 0)) return null;
 
   return (
-    <section className="py-20 px-6 md:px-12 mt-12">
+    <section className="py-12 md:py-20 px-6 md:px-12">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center gap-4 mb-16">
           <div className="h-px flex-1 bg-border-default" />

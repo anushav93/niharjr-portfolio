@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import SectionDivider from "@/components/ui/SectionDivider";
 
@@ -36,12 +37,20 @@ export default function FeaturedSection({ sectionTitle, projects }: FeaturedSect
                 href={project.href}
                 className="group block relative aspect-[4/5] overflow-hidden bg-neutral-100"
               >
-                <motion.img
-                  src={project.src}
-                  alt={project.alt}
-                  className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                <motion.div
+                  className="relative w-full h-full"
                   whileHover={{ scale: 1.05 }}
-                />
+                  transition={{ duration: 1, ease: 'easeOut' }}
+                >
+                  <Image
+                    src={project.src}
+                    alt={project.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    quality={85}
+                    className="object-cover"
+                  />
+                </motion.div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
                   <div className="w-full border-b border-white/30 pb-4">
                     <p className="text-white font-serif text-2xl italic tracking-wide">

@@ -2,13 +2,25 @@ import './globals.css';
 import type { Metadata } from 'next';
 import Providers from '@/components/Providers';
 import ConditionalLayout from '@/components/layout/ConditionalLayout';
+import ClarityScript from '@/components/analytics/ClarityScript';
+import CookieConsent from '@/components/analytics/CookieConsent';
 import { getEntry, imageUrl } from '@/lib/contentful';
 import { CONTENTFUL_ENTRIES } from '@/config/contentful';
 import type { SiteSettingsFields } from '@/types/contentful';
 import { Inter, Playfair_Display } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair' });
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+  adjustFontFallback: true,
+});
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+  adjustFontFallback: true,
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const entry = await getEntry<SiteSettingsFields>(CONTENTFUL_ENTRIES.siteSettings, { include: 1 });
@@ -54,28 +66,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {clarityId && (
-          <script
-            type="text/javascript"
-            dangerouslySetInnerHTML={{
-              __html: `
-                (function(c,l,a,r,i,t,y){
-                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-                })(window, document, "clarity", "script", "${clarityId}");
-              `,
-            }}
-          />
-        )}
-      </head>
       <body className={`${inter.variable} ${playfair.variable} font-sans`}>
+        {clarityId && <ClarityScript clarityId={clarityId} />}
         <Providers>
           <ConditionalLayout siteSettings={siteSettings} logoUrl={logoUrl}>
             {children}
           </ConditionalLayout>
         </Providers>
+        <CookieConsent />
       </body>
     </html>
   );

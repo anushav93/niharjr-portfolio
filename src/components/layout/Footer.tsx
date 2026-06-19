@@ -62,8 +62,9 @@ export default function Footer({ siteSettings, logoUrl }: FooterProps) {
                   <CornerFrameCard
                     key={cert.title}
                     cornerSize="sm"
+                    frameColor="border-primary-700"
                     onClick={() => setSelectedPdf({ url: cert.filePath, title: cert.title })}
-                    className="flex items-center gap-4 p-4 border border-stone-500 hover:border-primary-400 bg-bg-primary transition-all text-left w-full"
+                    className="flex items-center gap-4 p-4 border border-stone-500 hover:border-primary-700 bg-[#f5e9df] hover:bg-primary-100 hover:shadow-sm transition-all text-left w-full"
                   >
                     <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-primary-100 text-primary-600">
                       {CERT_ICONS[i % CERT_ICONS.length]}
@@ -106,9 +107,9 @@ export default function Footer({ siteSettings, logoUrl }: FooterProps) {
                     <li key={link.url}>
                       <Link
                         href={link.url}
-                        className="group inline-flex items-center gap-1 text-sm text-text-secondary hover:text-primary-600 transition-colors"
+                        className="group inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-primary-600 transition-colors"
                       >
-                        <span className="w-0 h-px bg-primary-500 group-hover:w-4 transition-all" />
+                        <span className="inline-block h-0.5 w-0 shrink-0 bg-primary-500 transition-all duration-300 group-hover:w-4" />
                         {link.title}
                       </Link>
                     </li>
@@ -117,35 +118,38 @@ export default function Footer({ siteSettings, logoUrl }: FooterProps) {
               </div>
             )}
 
-            <div>
+            <div className={links.length > 0 ? undefined : 'md:col-span-2'}>
               <h4 className="text-xs tracking-[0.2em] uppercase text-primary-600 mb-4 font-medium">
                 Connect
               </h4>
-              {siteSettings.contactCtaText && (
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center gap-1 text-sm text-text-secondary hover:text-primary-600 transition-colors mb-6"
-                >
-                  <span className="w-0 h-px bg-primary-500 group-hover:w-4 transition-all" />
-                  <FaRegEnvelope className="w-4 h-4 text-primary-600"/>
-                  {siteSettings.contactCtaText}
-                </Link>
-              )}
-              <div className="flex flex-col gap-3">
+              <ul className="space-y-3">
+                {siteSettings.contactCtaText && (
+                  <li>
+                    <Link
+                      href="/contact"
+                      className="group inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-primary-600 transition-colors"
+                    >
+                      <span className="inline-block h-0.5 w-0 shrink-0 bg-primary-500 transition-all duration-300 group-hover:w-4" />
+                      <FaRegEnvelope className="w-4 h-4 shrink-0 text-primary-600" />
+                      {siteSettings.contactCtaText}
+                    </Link>
+                  </li>
+                )}
                 {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-text-secondary hover:text-primary-600 transition-colors group inline-flex items-center gap-1"
-                  >
-                    <span className="w-0 h-px bg-primary-500 group-hover:w-4 transition-all" />
-
-                    {social.icon && <social.icon className="w-4 h-4 text-primary-600" />} {social.label}
-                  </a>
+                  <li key={social.label}>
+                    <a
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-primary-600 transition-colors"
+                    >
+                      <span className="inline-block h-0.5 w-0 shrink-0 bg-primary-500 transition-all duration-300 group-hover:w-4" />
+                      {social.icon && <social.icon className="w-4 h-4 shrink-0 text-primary-600" />}
+                      {social.label}
+                    </a>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </div>
 

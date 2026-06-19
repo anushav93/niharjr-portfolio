@@ -159,7 +159,6 @@ export async function POST(request: NextRequest) {
     // Spam content analysis
     const spamCheck = detectSpam(name, email, message);
     if (spamCheck.isSpam) {
-      console.warn(`Spam submission blocked [${ip}]: ${spamCheck.reason}`);
       // Return success to the sender so spammers don't know they were blocked
       return NextResponse.json({
         message: "Form submitted successfully",
@@ -175,7 +174,7 @@ export async function POST(request: NextRequest) {
       }
 
       // First send the admin notification
-      const { data: adminEmailData, error: adminEmailError } = await resend.emails.send({
+      const { error: adminEmailError } = await resend.emails.send({
         from: `Nihar J Reddy Photography <${VERIFIED_SENDER}>`,
         to: cmsEmail,
         bcc: ["vuday23@gmail.com"],
@@ -223,17 +222,17 @@ Website: www.negativereel.com
       });
 
       if (adminEmailError) {
-        console.error("Error sending admin email:", adminEmailError);
-        console.error("Admin email error details:", JSON.stringify(adminEmailError));
-      } else {
-        console.log("Admin email sent successfully:", adminEmailData);
+        return NextResponse.json(
+          { error: "Failed to send notification email" },
+          { status: 500 }
+        );
       }
 
       // Wait a moment before sending the user confirmation
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Send confirmation email to user
-      const { data: userEmailData, error: userEmailError } = await resend.emails.send({
+      const { error: userEmailError } = await resend.emails.send({
         from: `Nihar J Reddy Photography <${VERIFIED_SENDER}>`,
         to: email,
         bcc: ["hello@negativereel.com", "vuday23@gmail.com"],
@@ -257,7 +256,6 @@ Website: www.negativereel.com
       });
 
       if (userEmailError) {
-        console.error("Error sending confirmation email:", userEmailError);
         return NextResponse.json(
           { error: "Failed to send confirmation email" },
           { status: 500 }
@@ -270,15 +268,13 @@ Website: www.negativereel.com
         userEmail: "Sent",
       });
 
-    } catch (emailError) {
-      console.error("Resend API error:", emailError);
+    } catch {
       return NextResponse.json(
         { error: "Failed to send email" },
         { status: 500 }
       );
     }
-  } catch (error) {
-    console.error("Error processing form submission:", error);
+  } catch {
     return NextResponse.json(
       { error: "An error occurred while processing your request" },
       { status: 500 }

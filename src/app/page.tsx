@@ -11,7 +11,7 @@ export const revalidate = 60;
 
 function getRandomItem<T>(array: T[]): T | undefined {
   if (array.length === 0) return undefined;
-  return array[Math.floor(Math.random() * array.length)];
+  return array[Math.floor(Math.random() * array.length)]; 
 }
 
 export default async function HomePage() {
@@ -53,7 +53,7 @@ export default async function HomePage() {
 
       {fields.galleryCtaText && (
         <div className="text-center pb-32 px-6">
-          <CornerFrameButton href="/gallery">{fields.galleryCtaText}</CornerFrameButton>
+          <CornerFrameButton href="/gallery" variant="primary">{fields.galleryCtaText}</CornerFrameButton>
         </div>
       )}
     </div>

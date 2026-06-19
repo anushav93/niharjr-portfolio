@@ -16,7 +16,7 @@ export default function AboutCTA({
   if (!title && !primaryButtonText) return null;
 
   return (
-    <section className="py-20 px-6 text-center border-t border-border-default mt-12">
+    <section className="py-20 px-6 text-center border-t border-border-default">
       <div className="max-w-2xl mx-auto mb-12">
         {title && (
           <h2 className="font-serif text-3xl md:text-4xl text-text-primary mb-4">{title}</h2>
@@ -25,10 +25,10 @@ export default function AboutCTA({
       </div>
       <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
         {primaryButtonText && (
-          <CornerFrameButton href="/contact">{primaryButtonText}</CornerFrameButton>
+          <CornerFrameButton href="/contact" variant="primary">{primaryButtonText}</CornerFrameButton>
         )}
         {secondaryButtonText && (
-          <CornerFrameButton href="/gallery">{secondaryButtonText}</CornerFrameButton>
+          <CornerFrameButton href="/gallery" variant="secondary">{secondaryButtonText}</CornerFrameButton>
         )}
       </div>
     </section>

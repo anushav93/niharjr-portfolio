@@ -43,7 +43,6 @@ const ImageSlideshow: React.FC<ImageSlideshowProps> = ({ images }) => {
       setIsLoading(false);
     };
     img.onerror = () => {
-      console.error("Error loading image:", selectedImage);
       setIsLoading(false);
     };
   }, [images]);

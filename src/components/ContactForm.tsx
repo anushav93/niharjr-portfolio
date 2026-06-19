@@ -159,7 +159,7 @@ const ContactForm: React.FC = () => {
             disabled={status === "loading"}
             className={cn(
               "w-full px-4 py-4 bg-[#f5e9df] border border-stone-500 text-text-primary",
-              "focus:outline-none focus:border-primary-500 focus:bg-bg-primary transition-all",
+              "focus:outline-none focus:border-primary-500 focus:bg-primary transition-all",
               "text-sm disabled:opacity-50 disabled:cursor-not-allowed",
               "group-hover:border-primary-300"
             )}
@@ -183,7 +183,7 @@ const ContactForm: React.FC = () => {
             disabled={status === "loading"}
             className={cn(
               "w-full px-4 py-4 bg-[#f5e9df] border border-stone-500 text-text-primary",
-              "focus:outline-none focus:border-primary-500 focus:bg-bg-primary transition-all",
+              "focus:outline-none focus:border-primary-500 focus:bg-primary transition-all",
               "text-sm disabled:opacity-50 disabled:cursor-not-allowed",
               "group-hover:border-primary-300"
             )}
@@ -207,7 +207,7 @@ const ContactForm: React.FC = () => {
             rows={6}
             className={cn(
               "w-full px-4 py-4 bg-[#f5e9df] border border-stone-500 text-text-primary resize-none",
-              "focus:outline-none focus:border-primary-500 focus:bg-bg-primary transition-all",
+              "focus:outline-none focus:border-primary-500 focus:bg-primary transition-all",
               "text-sm disabled:opacity-50 disabled:cursor-not-allowed",
               "group-hover:border-primary-300"
             )}
@@ -256,9 +256,10 @@ const ContactForm: React.FC = () => {
 
        
 
-        <CornerFrameButton 
-        
-        type="submit" disabled={status === "loading" || status === "success" || !turnstileToken}>  <span className="relative z-10">
+        <CornerFrameButton
+        type="submit"
+        variant="primary"
+        disabled={status === "loading" || status === "success" || !turnstileToken}>  <span className="relative z-10">
             {status === "loading" ? "Sending..." : status === "success" ? "Sent!" : "Send Message"}
           </span></CornerFrameButton>
              {/* Error Message */}

@@ -11,12 +11,12 @@ interface CornerFrameButtonProps {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   className?: string;
+  variant?: "primary" | "secondary";
   frameColor?: string;
   frameSize?: "sm" | "md" | "lg";
   target?: "_blank" | "_self" | "_parent" | "_top";
 }
 
-// Reusable corner frame elements
 const CornerFrames: React.FC<{ frameColor: string; frameSize: string }> = ({
   frameColor,
   frameSize,
@@ -38,8 +38,6 @@ const CornerFrames: React.FC<{ frameColor: string; frameSize: string }> = ({
           frameColor
         )}
       />
-     
-  
       <div
         className={cn(
           "absolute bottom-0 right-0 border-r-2 border-b-2 opacity-0 group-hover:opacity-100 transition-opacity",
@@ -51,6 +49,19 @@ const CornerFrames: React.FC<{ frameColor: string; frameSize: string }> = ({
   );
 };
 
+const variantStyles = {
+  primary: {
+    button:
+      "inline-flex items-center justify-center bg-[#2a231f] text-[#faf8f5] border-[#2a231f] hover:bg-[#3d322a] hover:text-[#faf8f5]",
+    frame: "border-[#bfa078]",
+  },
+  secondary: {
+    button:
+      "inline-flex items-center justify-center bg-transparent text-[#2a231f] border-[#2a231f] hover:bg-[#2a231f]/5 hover:text-[#544536]",
+    frame: "border-[#6e5c44]",
+  },
+};
+
 const CornerFrameButton: React.FC<CornerFrameButtonProps> = ({
   children,
   href,
@@ -58,26 +69,29 @@ const CornerFrameButton: React.FC<CornerFrameButtonProps> = ({
   type = "button",
   disabled = false,
   className,
-  frameColor = "border-primary-600",
+  variant = "secondary",
+  frameColor,
   frameSize = "md",
   target,
 }) => {
+  const styles = variantStyles[variant];
+  const resolvedFrameColor = frameColor ?? styles.frame;
+
   const baseClasses = cn(
     "group relative px-8 py-3 text-sm tracking-[0.2em] uppercase",
-    "text-text-primary hover:text-primary-600 transition-colors font-medium",
-    "border border-border-default border-primary-600",
+    "border transition-colors font-medium",
+    styles.button,
     disabled && "opacity-50 cursor-not-allowed pointer-events-none",
     className
   );
 
   const content = (
     <>
-      <CornerFrames frameColor={frameColor} frameSize={frameSize} />
+      <CornerFrames frameColor={resolvedFrameColor} frameSize={frameSize} />
       {children}
     </>
   );
 
-  // Render as Link if href is provided
   if (href) {
     return (
       <Link href={href} target={target} className={baseClasses} onClick={onClick}>
@@ -86,7 +100,6 @@ const CornerFrameButton: React.FC<CornerFrameButtonProps> = ({
     );
   }
 
-  // Otherwise render as button
   return (
     <button
       type={type}
@@ -99,6 +112,5 @@ const CornerFrameButton: React.FC<CornerFrameButtonProps> = ({
   );
 };
 
-// Export CornerFrames separately for use in other components
 export { CornerFrames };
 export default CornerFrameButton;

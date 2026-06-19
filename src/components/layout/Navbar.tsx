@@ -66,8 +66,8 @@ export default function Navbar({ links, logoUrl, logoAlt }: NavbarProps) {
       </button>
 
       <div
-        className={`fixed inset-0 z-40 bg-bg-primary/98 backdrop-blur-lg transition-all duration-500 md:hidden ${
-          mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        className={`fixed inset-0 z-40 bg-[#f5e9df]/80 backdrop-blur-lg transition-opacity duration-500 md:hidden ${
+          mobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
         <div className="flex items-center justify-center h-full">
@@ -76,7 +76,7 @@ export default function Navbar({ links, logoUrl, logoAlt }: NavbarProps) {
               <li key={item.url}>
                 <Link href={item.url} onClick={() => setMobileMenuOpen(false)} className="relative group">
                   <span
-                    className={`text-2xl tracking-[0.2em] uppercase font-light transition-all ${
+                    className={`text-2xl tracking-[0.2em] uppercase font-medium transition-all ${
                       isActive(item.url) ? 'text-primary-600' : 'text-text-primary group-hover:text-primary-600'
                     }`}
                   >

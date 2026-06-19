@@ -31,7 +31,7 @@ export default async function ContactPage() {
         phone={settings.phone}
         location={settings.location}
       />
-      <div className="max-w-2xl mx-auto px-6 pb-20">
+      <div className="max-w-2xl mx-auto px-6 pb-16">
         <ContactForm />
       </div>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
+import Image from "next/image";
 import type { Photo } from "@/types/contentful";
 import { photoSrc } from '@/lib/images';
 
@@ -11,12 +12,6 @@ type LightboxProps = {
   onClose: () => void;
   onIndexChange: (nextIndex: number) => void;
 };
-
-function lightboxSrcSet(photo: Photo): string {
-  return [800, 1200, 1600, 2000, 2400]
-    .map((w) => `${photoSrc(photo, w, 85)} ${w}w`)
-    .join(', ');
-}
 
 export default function Lightbox({
   isOpen,
@@ -60,6 +55,7 @@ export default function Lightbox({
     <div
       role="dialog"
       aria-modal="true"
+      aria-label={photo.title || photo.alt || 'Photo viewer'}
       ref={dialogRef}
       tabIndex={-1}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 text-white"
@@ -67,6 +63,7 @@ export default function Lightbox({
       <button
         className="absolute top-4 right-4 rounded px-3 py-1 bg-white/10 hover:bg-white/20"
         onClick={onClose}
+        aria-label="Close"
       >
         Close
       </button>
@@ -74,6 +71,7 @@ export default function Lightbox({
         <button
           className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 rounded px-3 py-2 bg-white/10 hover:bg-white/20"
           onClick={() => onIndexChange(index - 1)}
+          aria-label="Previous photo"
         >
           ←
         </button>
@@ -82,17 +80,22 @@ export default function Lightbox({
         <button
           className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 rounded px-3 py-2 bg-white/10 hover:bg-white/20"
           onClick={() => onIndexChange(index + 1)}
+          aria-label="Next photo"
         >
           →
         </button>
       )}
-      <img
-        src={photoSrc(photo, 2000, 85)}
-        srcSet={lightboxSrcSet(photo)}
-        sizes="(max-width: 768px) 100vw, 80vw"
-        alt={photo.alt}
-        className="max-h-[80vh] w-auto object-contain"
-      />
+      <div className="relative w-full max-w-[80vw] h-[80vh]">
+        <Image
+          src={photoSrc(photo, 2000, 85)}
+          alt={photo.alt}
+          fill
+          priority
+          sizes="(max-width: 768px) 100vw, 80vw"
+          quality={85}
+          className="object-contain"
+        />
+      </div>
     </div>
   );
 }

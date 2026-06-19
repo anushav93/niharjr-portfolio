@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react';
+import { cn } from '@/functions/cn';
 
 type CornerFrameCardProps = {
   children: ReactNode;
   className?: string;
   cornerSize?: 'sm' | 'md' | 'lg';
+  frameColor?: string;
   onClick?: () => void;
 };
 
@@ -17,6 +19,7 @@ export default function CornerFrameCard({
   children,
   className = '',
   cornerSize = 'md',
+  frameColor = 'border-primary-300',
   onClick,
 }: CornerFrameCardProps) {
   const size = cornerSizes[cornerSize];
@@ -28,9 +31,9 @@ export default function CornerFrameCard({
       onClick={onClick}
       className={`group relative ${className}`}
     >
-      <div className={`absolute top-0 left-0 ${size} border-l-2 border-t-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity`} />
+      <div className={cn('absolute top-0 left-0 border-l-2 border-t-2 opacity-0 group-hover:opacity-100 transition-opacity', size, frameColor)} />
       {children}
-      <div className={`absolute bottom-0 right-0 ${size} border-r-2 border-b-2 border-primary-300 opacity-0 group-hover:opacity-100 transition-opacity`} />
+      <div className={cn('absolute bottom-0 right-0 border-r-2 border-b-2 opacity-0 group-hover:opacity-100 transition-opacity', size, frameColor)} />
     </Tag>
   );
 }

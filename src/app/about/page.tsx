@@ -11,7 +11,6 @@ export const revalidate = 60;
 
 export default async function AboutPage() {
   const entry = await getEntry<AboutPageFields>(CONTENTFUL_ENTRIES.aboutPage, { include: 1 });
-  console.log(entry);
   if (!entry) notFound();
 
   const fields = entry.fields;

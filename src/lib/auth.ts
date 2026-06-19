@@ -35,8 +35,7 @@ export const authOptions: NextAuthOptions = {
         const isAuthorized = validateAdminAccess(user.email)
         
         if (!isAuthorized) {
-          console.log(`Unauthorized access attempt by: ${user.email}`)
-          return false // This will prevent sign-in
+          return false
         }
         
         return true
